@@ -6,11 +6,11 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+zodiac = Category.create(title: "Zodiac")
+celest = Category.create(title: "Celestial Objects")
+num = Category.create(title: "Number")
 
-abun = Power.create(name: "Abundance", description: "To Attract, Perpetuate")
+abundance = Intention.create(name: "Abundance", desc: "To Attract, Perpetuate")
 
-virgo = Correspondence.create(type: "Zodiac", name: "Virgo")
-jupiter =  Correspondence.create(type: "Solar", name: "Jupiter")
+virgo = Correspondence.create(name: "Virgo")
 
-abun.correspondences << virgo
-abun.correspondences << jupiter

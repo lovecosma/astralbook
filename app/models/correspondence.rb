@@ -1,4 +1,4 @@
 class Correspondence < ApplicationRecord
-    has_and_belongs_to_many :powers
-    has_many :correspondences, through: :powers
+    has_and_belongs_to_many :intentions
+    has_and_belongs_to_many :categories
 end

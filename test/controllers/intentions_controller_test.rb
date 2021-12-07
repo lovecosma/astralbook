@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PowersControllerTest < ActionDispatch::IntegrationTest
+class IntentionsControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

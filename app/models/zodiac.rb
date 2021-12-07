@@ -1,2 +1,0 @@
-class Zodiac < Correspondence
-end
