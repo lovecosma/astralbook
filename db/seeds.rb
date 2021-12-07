@@ -74,7 +74,6 @@ Correspondence.create(name: "Last Quarter", category_id: moon_phases.id)
 Correspondence.create(name: "Waning Crescent", category_id: moon_phases.id)
 
 #seasons
-
 Correspondence.create(name: "Summer", category_id: seasons.id)
 Correspondence.create(name: "Spring", category_id: seasons.id)
 Correspondence.create(name: "Winter", category_id: seasons.id)
@@ -93,6 +92,46 @@ Correspondence.create(name: "September", category_id: full_moons.id)
 Correspondence.create(name: "October", category_id: full_moons.id)
 Correspondence.create(name: "November", category_id: full_moons.id)
 Correspondence.create(name: "December", category_id: full_moons.id)
+
+
+# days 
+Correspondence.create(name: "Sunday", category_id: days.id)
+Correspondence.create(name: "Monday", category_id: full_moons.id)
+Correspondence.create(name: "Tuesday", category_id: full_moons.id)
+Correspondence.create(name: "Wednesday", category_id: full_moons.id)
+Correspondence.create(name: "Thursday", category_id: full_moons.id)
+Correspondence.create(name: "Friday", category_id: full_moons.id)
+Correspondence.create(name: "Saturday", category_id: full_moons.id)
+
+#elements 
+
+Correspondence.create(name: "Earth", category_id: elements.id)
+Correspondence.create(name: "Water", category_id: elements.id)
+Correspondence.create(name: "Wind", category_id: elements.id)
+Correspondence.create(name: "Fire", category_id: elements.id)
+Correspondence.create(name: "Ether", category_id: elements.id)
+
+# directions
+
+Correspondence.create(name: "North", category_id: directions.id)
+Correspondence.create(name: "Northeast", category_id: directions.id)
+Correspondence.create(name: "East", category_id: directions.id)
+Correspondence.create(name: "Southeast", category_id: directions.id)
+Correspondence.create(name: "South", category_id: directions.id)
+Correspondence.create(name: "Southwest", category_id: directions.id)
+Correspondence.create(name: "West", category_id: directions.id)
+Correspondence.create(name: "Northwest", category_id: directions.id)
+
+#colors
+
+Correspondence.create(name: "Red", category_id: colors.id)
+Correspondence.create(name: "Orange", category_id: colors.id)
+Correspondence.create(name: "Yellow", category_id: colors.id)
+Correspondence.create(name: "Green", category_id: colors.id)
+Correspondence.create(name: "Blue", category_id: colors.id)
+Correspondence.create(name: "Indigo", category_id: colors.id)
+Correspondence.create(name: "Violet", category_id: colors.id)
+Correspondence.create(name: "Purple", category_id: colors.id)
 
 # abundance = Intention.create(name: "Abundance", desc: "To Attract, Perpetuate")
 
