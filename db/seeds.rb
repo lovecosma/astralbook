@@ -8,7 +8,6 @@
 
 zodiac = Category.create(title: "Zodiac")
 celests = Category.create(title: "Celestial Objects")
-numbers = Category.create(title: "Numbers")
 moon_phases = Category.create(title: "Moon Phases")
 seasons = Category.create(title: "Seasons")
 full_moons = Category.create(title: "Full Moons")
@@ -34,6 +33,7 @@ critters = Category.create(title: "Critters")
 mythical = Category.create(title: "Mythical")
 time_of_day = Category.create(title: "Time of Day")
 tarot = Category.create(title: "Tarot")
+numbers = Category.create(title: "Numbers")
 
 
 # zodiac
@@ -63,8 +63,36 @@ Correspondence.create(name: "Mars", category_id: celests.id)
 Correspondence.create(name: "Venus", category_id: celests.id)
 Correspondence.create(name: "Pluto", category_id: celests.id)
 
-#
+#moon phases
+Correspondence.create(name: "New Moon", category_id: moon_phases.id)
+Correspondence.create(name: "Waxing Crescent", category_id: moon_phases.id)
+Correspondence.create(name: "First Quarter", category_id: moon_phases.id)
+Correspondence.create(name: "Waxing Gibbous", category_id: moon_phases.id)
+Correspondence.create(name: "Full Moon", category_id: moon_phases.id)
+Correspondence.create(name: "Waning Gibbous", category_id: moon_phases.id)
+Correspondence.create(name: "Last Quarter", category_id: moon_phases.id)
+Correspondence.create(name: "Waning Crescent", category_id: moon_phases.id)
 
+#seasons
+
+Correspondence.create(name: "Summer", category_id: seasons.id)
+Correspondence.create(name: "Spring", category_id: seasons.id)
+Correspondence.create(name: "Winter", category_id: seasons.id)
+Correspondence.create(name: "Autumn", category_id: seasons.id)
+
+# months 
+Correspondence.create(name: "January", category_id: full_moons.id)
+Correspondence.create(name: "February", category_id: full_moons.id)
+Correspondence.create(name: "March", category_id: full_moons.id)
+Correspondence.create(name: "April", category_id: full_moons.id)
+Correspondence.create(name: "May", category_id: full_moons.id)
+Correspondence.create(name: "June", category_id: full_moons.id)
+Correspondence.create(name: "July", category_id: full_moons.id)
+Correspondence.create(name: "August", category_id: full_moons.id)
+Correspondence.create(name: "September", category_id: full_moons.id)
+Correspondence.create(name: "October", category_id: full_moons.id)
+Correspondence.create(name: "November", category_id: full_moons.id)
+Correspondence.create(name: "December", category_id: full_moons.id)
 
 # abundance = Intention.create(name: "Abundance", desc: "To Attract, Perpetuate")
 
