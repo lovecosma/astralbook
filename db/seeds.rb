@@ -36,10 +36,39 @@ time_of_day = Category.create(title: "Time of Day")
 tarot = Category.create(title: "Tarot")
 
 
+# zodiac
+Correspondence.create(name: "Aries", category_id: zodiac.id)
+Correspondence.create(name: "Taurus", category_id: zodiac.id)
+Correspondence.create(name: "Gemini", category_id: zodiac.id)
+Correspondence.create(name: "Cancer", category_id: zodiac.id)
+Correspondence.create(name: "Leo", category_id: zodiac.id)
+Correspondence.create(name: "Virgo", category_id: zodiac.id)
+Correspondence.create(name: "Libra", category_id: zodiac.id)
+Correspondence.create(name: "Scorpio", category_id: zodiac.id)
+Correspondence.create(name: "Sagittarius", category_id: zodiac.id)
+Correspondence.create(name: "Capricorn", category_id: zodiac.id)
+Correspondence.create(name: "Aquarius", category_id: zodiac.id)
+Correspondence.create(name: "Pisces", category_id: zodiac.id)
+
+
+# celestisal objects
+Correspondence.create(name: "Jupiter", category_id: celests.id)
+Correspondence.create(name: "Sun", category_id: celests.id)
+Correspondence.create(name: "Moon", category_id: celests.id)
+Correspondence.create(name: "Neptune", category_id: celests.id)
+Correspondence.create(name: "Uranus", category_id: celests.id)
+Correspondence.create(name: "Mercury", category_id: celests.id)
+Correspondence.create(name: "Saturn", category_id: celests.id)
+Correspondence.create(name: "Mars", category_id: celests.id)
+Correspondence.create(name: "Venus", category_id: celests.id)
+Correspondence.create(name: "Pluto", category_id: celests.id)
+
+#
+
+
 # abundance = Intention.create(name: "Abundance", desc: "To Attract, Perpetuate")
 
 # virgo = Correspondence.create(name: "Virgo")
-# jupiter = Correspondence.create(name: "Jupiter")
 
 
 # zodiac.correspondences << virgo
@@ -48,5 +77,5 @@ tarot = Category.create(title: "Tarot")
 # abundance.correspondences << virgo
 # abundance.correspondences << jupiter
 
-# puts "Seeded."
+puts "Seeded."
 
