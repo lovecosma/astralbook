@@ -1,0 +1,2 @@
+class MoonPhase < Correspondence
+end

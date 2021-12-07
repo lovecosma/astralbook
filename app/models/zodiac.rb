@@ -1,0 +1,2 @@
+class Zodiac < Correspondence
+end

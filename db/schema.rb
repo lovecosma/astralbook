@@ -23,20 +23,20 @@ ActiveRecord::Schema.define(version: 2021_12_07_175137) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "correspondences_powers", force: :cascade do |t|
+    t.bigint "power_id"
+    t.bigint "correspondence_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["correspondence_id"], name: "index_correspondences_powers_on_correspondence_id"
+    t.index ["power_id"], name: "index_correspondences_powers_on_power_id"
+  end
+
   create_table "powers", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "powers_correspondences", force: :cascade do |t|
-    t.bigint "power_id"
-    t.bigint "correspondence_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["correspondence_id"], name: "index_powers_correspondences_on_correspondence_id"
-    t.index ["power_id"], name: "index_powers_correspondences_on_power_id"
   end
 
 end

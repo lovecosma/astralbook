@@ -1,0 +1,3 @@
+class Solar < Correspondence
+    
+end
