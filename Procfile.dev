@@ -1,0 +1,2 @@
+web: "rails s"
+api: "npm start client --prefix"
