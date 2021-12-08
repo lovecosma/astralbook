@@ -13,4 +13,16 @@ class CorrespondencesController < ApplicationController
         end 
     end
 
+
+    def create
+        correspondence = Correspondence.new()
+    end
+
+
+    private 
+
+    def correspondence_params
+        params.require(:correspondence).permit(:name, :desc, :category_id)
+    end
+
 end
