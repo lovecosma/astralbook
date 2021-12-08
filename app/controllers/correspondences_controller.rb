@@ -15,7 +15,12 @@ class CorrespondencesController < ApplicationController
 
 
     def create
-        correspondence = Correspondence.new()
+        correspondence = Correspondence.new(correspondence_params)
+        if correspondence.save
+            render json: correspondence, status: :created
+        else 
+            render json: {errors: correspondence.errors.full_messages}, status: :unprocessable_entity
+        end 
     end
 
 
