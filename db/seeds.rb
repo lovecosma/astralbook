@@ -63,7 +63,8 @@ Correspondence.create(name: "Venus", category_id: celests.id)
 Correspondence.create(name: "Pluto", category_id: celests.id)
 Correspondence.create(name: "Earth", category_id: celests.id)
 
-#moon phases
+# moon phases
+
 Correspondence.create(name: "New Moon", category_id: moon_phases.id)
 Correspondence.create(name: "Waxing Crescent", category_id: moon_phases.id)
 Correspondence.create(name: "First Quarter", category_id: moon_phases.id)
@@ -73,13 +74,15 @@ Correspondence.create(name: "Waning Gibbous", category_id: moon_phases.id)
 Correspondence.create(name: "Last Quarter", category_id: moon_phases.id)
 Correspondence.create(name: "Waning Crescent", category_id: moon_phases.id)
 
-#seasons
+# seasons
+
 Correspondence.create(name: "Summer", category_id: seasons.id)
 Correspondence.create(name: "Spring", category_id: seasons.id)
 Correspondence.create(name: "Winter", category_id: seasons.id)
 Correspondence.create(name: "Autumn", category_id: seasons.id)
 
 # months 
+
 Correspondence.create(name: "January", category_id: full_moons.id)
 Correspondence.create(name: "February", category_id: full_moons.id)
 Correspondence.create(name: "March", category_id: full_moons.id)
@@ -95,6 +98,7 @@ Correspondence.create(name: "December", category_id: full_moons.id)
 
 
 # days 
+
 Correspondence.create(name: "Sunday", category_id: days.id)
 Correspondence.create(name: "Monday", category_id: days.id)
 Correspondence.create(name: "Tuesday", category_id: days.id)
@@ -103,7 +107,7 @@ Correspondence.create(name: "Thursday", category_id: days.id)
 Correspondence.create(name: "Friday", category_id: days.id)
 Correspondence.create(name: "Saturday", category_id: days.id)
 
-#elements 
+# elements 
 
 Correspondence.create(name: "Earth", category_id: elements.id)
 Correspondence.create(name: "Water", category_id: elements.id)
@@ -122,7 +126,7 @@ Correspondence.create(name: "Southwest", category_id: directions.id)
 Correspondence.create(name: "West", category_id: directions.id)
 Correspondence.create(name: "Northwest", category_id: directions.id)
 
-#colors
+# colors
 
 Correspondence.create(name: "Red", category_id: colors.id)
 Correspondence.create(name: "Orange (color)", category_id: colors.id)
@@ -148,6 +152,7 @@ Correspondence.create(name: "Turquoise", category_id: colors.id)
 Correspondence.create(name: "Copper (color)", category_id: colors.id)
 
  # ogham
+
 Correspondence.create(name: "Ruis", category_id: ogham.id) 
 Correspondence.create(name: "Luis", category_id: ogham.id) 
 Correspondence.create(name: "Ngetal", category_id: ogham.id)
@@ -156,12 +161,14 @@ Correspondence.create(name: "Tinne", category_id: ogham.id)
 Correspondence.create(name: "Beithe", category_id: ogham.id) 
 
 # runes
+
 Correspondence.create(name: "Feoh", category_id: ogham.id) 
 Correspondence.create(name: "Jera", category_id: ogham.id) 
 Correspondence.create(name: "Beorc", category_id: ogham.id) 
 Correspondence.create(name: "Dag", category_id: ogham.id) 
 
 # chakras
+
 Correspondence.create(name: "Root", category_id: chakras.id) 
 Correspondence.create(name: "Sacral", category_id: chakras.id) 
 Correspondence.create(name: "Solar Plexus", category_id: chakras.id) 
@@ -171,6 +178,7 @@ Correspondence.create(name: "Third Eye", category_id: chakras.id)
 Correspondence.create(name: "Crown", category_id: chakras.id) 
 
 # plants
+
 Correspondence.create(name: "Grain", category_id: plants.id) 
 Correspondence.create(name: "Myrrh", category_id: plants.id)  
 Correspondence.create(name: "Cinnamon", category_id: plants.id)  
@@ -225,9 +233,103 @@ Correspondence.create(name: "Goldenrod", category_id: plants.id)
 Correspondence.create(name: "Black Pepper", category_id: plants.id) 
 Correspondence.create(name: "Bamboo", category_id: plants.id) 
 
+# minerals
 
-Correspondence.create(name: "")
-
+Correspondence.create(name: "Tree Agate", category_id: minerals.id) 
+Correspondence.create(name: "Apatite", category_id: minerals.id) 
+Correspondence.create(name: "Aventurine", category_id: minerals.id) 
+Correspondence.create(name: "Bloodstone", category_id: minerals.id) 
+Correspondence.create(name: "Chrysoberyl", category_id: minerals.id) 
+Correspondence.create(name: "Chrysoprase", category_id: minerals.id) 
+Correspondence.create(name: "Citrine", category_id: minerals.id) 
+Correspondence.create(name: "Dioptase", category_id: minerals.id) 
+Correspondence.create(name: "Jade", category_id: minerals.id) 
+Correspondence.create(name: "Malachite", category_id: minerals.id) 
+Correspondence.create(name: "Moss Agate", category_id: minerals.id) 
+Correspondence.create(name: "Peridot", category_id: minerals.id) 
+Correspondence.create(name: "Rhodochrosite", category_id: minerals.id) 
+Correspondence.create(name: "Quartz", category_id: minerals.id) 
+Correspondence.create(name: "Salt", category_id: minerals.id) 
+Correspondence.create(name: "Smoky", category_id: minerals.id) 
+Correspondence.create(name: "Quartz", category_id: minerals.id) 
+Correspondence.create(name: "Tiger’s Eye", category_id: minerals.id) 
+Correspondence.create(name: "Topaz", category_id: minerals.id) 
+Correspondence.create(name: "Green Tourmaline", category_id: minerals.id) 
+Correspondence.create(name: "Zircon", category_id: minerals.id) 
+Correspondence.create(name: "Angelite", category_id: minerals.id)  
+Correspondence.create(name: "Aragonite", category_id: minerals.id)  
+Correspondence.create(name: "Beryl", category_id: minerals.id)  
+Correspondence.create(name: "Larimar", category_id: minerals.id)  
+Correspondence.create(name: "Rose Quartz", category_id: minerals.id)  
+Correspondence.create(name: "Ruby", category_id: minerals.id)  
+Correspondence.create(name: "Green Zircon", category_id: minerals.id) 
+Correspondence.create(name: "Red Zircon", category_id: minerals.id) 
+Correspondence.create(name: "Red Agate", category_id: minerals.id)
+Correspondence.create(name: "Moonstone", category_id: minerals.id) 
+Correspondence.create(name: "Jasper", category_id: minerals.id) 
+Correspondence.create(name: "Sunstone", category_id: minerals.id)
+Correspondence.create(name: "Tanzanite", category_id: minerals.id) 
+Correspondence.create(name: "Zoisite", category_id: minerals.id) 
+Correspondence.create(name: "Amber", category_id: minerals.id) 
+Correspondence.create(name: "Fluorite", category_id: minerals.id)  
+Correspondence.create(name: "Hematite", category_id: minerals.id) 
+Correspondence.create(name: "Iolite", category_id: minerals.id) 
+Correspondence.create(name: "Kunzite", category_id: minerals.id) 
+Correspondence.create(name: "Phenacite", category_id: minerals.id) 
+Correspondence.create(name: "Clear Quartz", category_id: minerals.id) 
+Correspondence.create(name: "Rhodonite", category_id: minerals.id) 
+Correspondence.create(name: "Garnet", category_id: minerals.id) 
+Correspondence.create(name: "Brown Jade", category_id: minerals.id)  
+Correspondence.create(name: "Opal", category_id: minerals.id)  
+Correspondence.create(name: "Selenite", category_id: minerals.id)  
+Correspondence.create(name: "Sodalite", category_id: minerals.id) 
+Correspondence.create(name: "Amazonite", category_id: minerals.id)
+Correspondence.create(name: "Apache Tears", category_id: minerals.id)
+Correspondence.create(name: "Jet", category_id: minerals.id)
+Correspondence.create(name: "Lapis Lazuli", category_id: minerals.id)
+Correspondence.create(name: "Obsidian", category_id: minerals.id) 
+Correspondence.create(name: "Carnelian", category_id: minerals.id) 
+Correspondence.create(name: "Herkimer Diamond", category_id: minerals.id) 
+Correspondence.create(name: "Amethyst", category_id: minerals.id)  
+Correspondence.create(name: "Blue Lace Agate", category_id: minerals.id) 
+Correspondence.create(name: "Howlite", category_id: minerals.id)  
+Correspondence.create(name: "Sapphire", category_id: minerals.id)  
+Correspondence.create(name: "Sugilite", category_id: minerals.id)  
+Correspondence.create(name: "Blue Topaz", category_id: minerals.id) 
+Correspondence.create(name: "Cat’s Eye", category_id: minerals.id) 
+Correspondence.create(name: "Hawk’s Eye", category_id: minerals.id) 
+Correspondence.create(name: "Labradorite", category_id: minerals.id) 
+Correspondence.create(name: "Azurite", category_id: minerals.id) 
+Correspondence.create(name: "Ametrine", category_id: minerals.id) 
+Correspondence.create(name: "Apophyllite", category_id: minerals.id) 
+Correspondence.create(name: "Calcite", category_id: minerals.id) 
+Correspondence.create(name: "Celestite", category_id: minerals.id) 
+Correspondence.create(name: "Cerussite", category_id: minerals.id)
+Correspondence.create(name: "Moldovite", category_id: minerals.id) 
+Correspondence.create(name: "Staurolite", category_id: minerals.id) 
+Correspondence.create(name: "Turquoise (mineral)", category_id: minerals.id)
+Correspondence.create(name: "Lodestone", category_id: minerals.id) 
+Correspondence.create(name: "Tourmaline", category_id: minerals.id) 
+Correspondence.create(name: "Aquamarine", category_id: minerals.id) 
+Correspondence.create(name: "Citrine", category_id: minerals.id) 
+Correspondence.create(name: "Onyx", category_id: minerals.id) 
+Correspondence.create(name: "Black Opal", category_id: minerals.id)
+Correspondence.create(name: "Sardonyx", category_id: minerals.id) 
+Correspondence.create(name: "Danburite", category_id: minerals.id)
+Correspondence.create(name: "Yellow Quartz", category_id: minerals.id)
+Correspondence.create(name: "Alexandrite", category_id: minerals.id) 
+Correspondence.create(name: "Andalusite", category_id: minerals.id) 
+Correspondence.create(name: "Chrysocolla", category_id: minerals.id) 
+Correspondence.create(name: "Lepidolite", category_id: minerals.id) 
+Correspondence.create(name: "Petrified Wood", category_id: minerals.id) 
+Correspondence.create(name: "Serpentine", category_id: minerals.id) 
+Correspondence.create(name: "Smoky Quartz", category_id: minerals.id) 
+Correspondence.create(name: "Tsavorite", category_id: minerals.id)
+Correspondence.create(name: "Emerald", category_id: minerals.id) 
+Correspondence.create(name: "Salt", category_id: minerals.id) 
+Correspondence.create(name: "Desert Rose", category_id: minerals.id)
+Correspondence.create(name: "Kyanite", category_id: minerals.id) 
+Correspondence.create(name: "Sard", category_id: minerals.id) 
 
 
 
