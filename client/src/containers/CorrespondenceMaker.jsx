@@ -29,9 +29,9 @@ export default function CorrespondenceMaker({correspondences, categories, setCor
         })
         .then(resp => {
             if(resp.ok){
-                resp.json().then(corData => setCorrespondences([...correspondences, corData]))
-            }else{
-                resp.json().then(error => alert(error.errors))
+                resp.json().then(corData => {setName(""); setCorrespondences([...correspondences, corData])})
+            }else {
+                resp.json().then(error => console.log(error.errors))
             }
         })
     }

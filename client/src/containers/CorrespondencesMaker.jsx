@@ -1,35 +1,64 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import M from "materialize-css"
 
-export default function CorrespondencesMaker({categories, correspondences}) {
+export default function CorrespondencesMaker({categories, setCorrespondences}) {
 
     const [correspondenceNames, setCorrespodenceNames] = useState("")
     const [categoryId, setCategoryId] = useState(null)
 
+    useEffect(() => {
+        let elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems, {});
+    }, [])
 
     const handleChange = (e) => {
         setCorrespodenceNames(e.target.value)
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        let correspondenceData = correspondenceNames.map(name => {
-            return {
-                name,
-                category_id: categoryId
-            }
-        })
+    const createCorrespondence = (data) => {
         fetch('/api/correspondences', {
             method: "POST", 
             headers: {
-                
+               "Accept": "application/json",
+               "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(resp => {
+            if(resp.ok){
+                resp.json().then(data => {
+                    setCorrespodenceNames("")
+                    setCorrespondences((prev) => {
+                       return [...prev, data]
+                    })
+                })
+            }else {
+                resp.json().then(error => console.log(error.errors));
             }
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        let name_array = correspondenceNames.split(', ')
+        let correspondenceData = name_array.map(name => {
+            return {
+               correspondence: {
+                    name,
+                    category_id: categoryId
+               }
+            }
+        })
+
+        correspondenceData.forEach(c => {
+            createCorrespondence(c)
         })
         
     }
 
+
     const handleSelect = (e) => {
         setCategoryId(e.target.value)
-        console.log(categoryId);
     }
 
     return (

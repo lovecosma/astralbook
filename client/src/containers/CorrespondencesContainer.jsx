@@ -37,7 +37,7 @@ export default function CorrespondencesContainer() {
            
                 <CorrespondenceMaker correspondences={correspondences} categories={categories} setName={setName} setCorrespondences={setCorrespondences} name={name}/>
                 <h2>- OR -</h2>
-                <CorrespondencesMaker correspondences={correspondences} categories={categories} />
+                <CorrespondencesMaker setCorrespondences={setCorrespondences} categories={categories} />
                 <h2>Correspondences</h2>
                 {correspondences.filter(cor => cor.name.includes(name)).map(cor => {
                     return (

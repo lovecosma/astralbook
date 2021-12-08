@@ -9,7 +9,7 @@ class CorrespondencesController < ApplicationController
                 render json: {error: "Category not found."}, status: :not_found
             end
         else
-            render json: Correspondence.all, :include => :category, status: :ok
+            render json: Correspondence.all, status: :ok
         end 
     end
 
