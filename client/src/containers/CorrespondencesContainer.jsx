@@ -42,7 +42,7 @@ export default function CorrespondencesContainer() {
                 {correspondences.filter(cor => cor.name.includes(name)).map(cor => {
                     return (
                         <div>
-                            <h3>{cor.name}</h3>
+                            <h3>{`Correspondence.create(name: "${cor.name}", category_id: ${cor.category_id})`}</h3>
                         </div>
                     )
                 })}
