@@ -11,14 +11,6 @@ export default function CorrespondencesContainer() {
    
 
     useEffect(() => {
-        fetch('/api/correspondences')
-        .then(resp => {
-            if(resp.ok){
-                resp.json().then(setCorrespondences)
-            } else {
-                alert("There was an error")
-            }
-        })
         fetch("/api/categories")
         .then(resp => resp.json())
         .then(data => {
@@ -34,12 +26,9 @@ export default function CorrespondencesContainer() {
 
     return (
         <div>
-           
-                <CorrespondenceMaker correspondences={correspondences} categories={categories} setName={setName} setCorrespondences={setCorrespondences} name={name}/>
-                <h2>- OR -</h2>
                 <CorrespondencesMaker setCorrespondences={setCorrespondences} categories={categories} />
                 <h2>Correspondences</h2>
-                {correspondences.filter(cor => cor.name.includes(name)).map(cor => {
+                {correspondences.map(cor => {
                     return (
                         <div>
                             <h3>{`Correspondence.create(name: "${cor.name}", category_id: ${cor.category_id})`}</h3>
