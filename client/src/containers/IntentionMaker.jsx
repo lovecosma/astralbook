@@ -1,8 +1,17 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import "../stylesheets/Intentions.css"
+
 export default function IntentionMaker() {
+
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
+    const [intentions, setIntentions] = useState([])
+
+    useEffect(() => {
+     fetch("/api/intentions")
+     .then(resp => resp.json())
+     .then(setIntentions)
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -30,6 +39,12 @@ export default function IntentionMaker() {
                 <input placeholder="desc" onChange={e => setDesc(e.target.value)}type="text" name="desc" value={desc}/> 
                 <button type="submit">Create Intention</button> 
             </form> 
+            <h1>Intentions</h1>
+            {intentions.map(i => {
+                return (
+                    <div>{i.name}</div>
+                )
+            })}
         </div>
     )
 }
