@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
     def index  
-        render json: Category.all
+        render json: Category.order(title: :asc)
     end
 end

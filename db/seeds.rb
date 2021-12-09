@@ -628,4 +628,5 @@ Correspondence.create(name: "Lynx", category_id: 20)
 Correspondence.create(name: "Groundhog", category_id: 20)
 Correspondence.create(name: "Loon", category_id: 23)
 Correspondence.create(name: "Orca", category_id: 21)
+#TODO: page 31 Attachments
  puts "Seeded."
