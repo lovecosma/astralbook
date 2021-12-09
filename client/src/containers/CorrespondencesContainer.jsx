@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import M from "materialize-css"
 import CorrespondenceMaker from './CorrespondenceMaker'
 import CorrespondencesMaker from './CorrespondencesMaker'
+import "../stylesheets/Correspondences.css"
 export default function CorrespondencesContainer() {
 
     const [correspondences, setCorrespondences] = useState([])
@@ -42,24 +43,24 @@ export default function CorrespondencesContainer() {
 
 
     return (
-        <div>
-                <CorrespondencesMaker setCorrespondences={setCorrespondences} categories={categories} />
-                <h2>Correspondences</h2>
-                <p>
-                <label>
-                    <input onClick={() => {
-                        setEditing(!editing)
-                    }} type="checkbox" />
-                    <span>Editing</span>
-                </label>
-                </p>
-                {correspondences.map(cor => {
-                    return (
-                        <div>
-                            <h3>{`Correspondence.create(name: "${cor.name}", category_id: ${cor.category_id})`} {editing && <button ocClick={() => handleDelete(cor.id)}>X</button>}</h3>
-                        </div>
-                    )
-                })}
+        <div className="correspondences-container">
+            <CorrespondencesMaker setCorrespondences={setCorrespondences} categories={categories} />
+            <h2>Correspondences</h2>
+            <p>
+            <label>
+                <input onClick={() => {
+                    setEditing(!editing)
+                }} type="checkbox" />
+                <span>Editing</span>
+            </label>
+            </p>
+            {correspondences.map(cor => {
+                return (
+                    <div>
+                        <h3>{`Correspondence.create(name: "${cor.name}", category_id: ${cor.category_id})`} {editing && <button ocClick={() => handleDelete(cor.id)}>X</button>}</h3>
+                    </div>
+                )
+            })}
         </div>
     )
 }
