@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import M from "materialize-css"
 
-export default function CorrespondencesMaker({categories, setCorrespondences}) {
+export default function CorrespondencesMaker({categories, setCorrespondences, intentions}) {
 
     const [correspondenceNames, setCorrespodenceNames] = useState("")
     const [categoryId, setCategoryId] = useState(null)
+    const [intentionId, setIntentionId] = useState(null)
 
     useEffect(() => {
         let elems = document.querySelectorAll('select');
@@ -38,6 +39,24 @@ export default function CorrespondencesMaker({categories, setCorrespondences}) {
         })
     }
 
+    const associateCorrespondence = async (correspondence) => {
+
+        let params = {
+            intention: {
+                correspondence
+            }
+        }
+
+        let resp = fetch(`/api/intentions/${intentionId}`, {
+            method: "PATCH", 
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(params) 
+        })
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         let name_array = correspondenceNames.split(', ')
@@ -52,6 +71,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences}) {
 
         correspondenceData.forEach(c => {
             createCorrespondence(c)
+            associateCorrespondence(c)
         })
         
     }
@@ -60,6 +80,10 @@ export default function CorrespondencesMaker({categories, setCorrespondences}) {
     const handleSelect = (e) => {
         setCategoryId(e.target.value)
     }
+
+    const handleIntentionSelect = (e) => {
+        setIntentionId(e.target.value)
+    }   
 
     return (
         <div>
@@ -73,6 +97,15 @@ export default function CorrespondencesMaker({categories, setCorrespondences}) {
                         })}
                     </select>
                     <label>Category Select</label>
+                </div>
+                <div class="input-field col s12">
+                    <select onChange={handleIntentionSelect}>
+                        <option value="" disabled selected>Choose your option</option>
+                        {intentions.map(i => {
+                            return <option value={i.id}>{i.name}</option>
+                        })}
+                    </select>
+                    <label>Intention Select</label>
                 </div>
                 <button type="submit">Create Correspondences</button>
             </form>

@@ -9,19 +9,25 @@ export default function CorrespondencesContainer() {
     const [categories, setCategories] = useState([])
     const [name, setName] = useState("")
     const [editing, setEditing] = useState(false);
-   
+    const [intentions, setIntentions] = useState([])
+
 
     useEffect(() => {
         // fetch('/api/correspondences')
         // .then(resp => resp.json())
         // .then(setCorrespondences)
-        fetch("/api/categories")
-        .then(resp => resp.json())
-        .then(data => {
-            setCategories(data)
+        const fetchInfo = async () => {
+            let resp = await fetch("/intentions")
+            let intentionsData = await resp.json()
+            setIntentions(intentionsData)
+    
+            let resp2 = await fetch("/api/categories")
+            let catData = await resp2.json()
+            setCategories(catData)
             let elems = document.querySelectorAll('select');
             M.FormSelect.init(elems, {});
-        })
+        }
+        fetchInfo()
     }, [])
 
     const handleDelete = (id) => {
@@ -44,7 +50,7 @@ export default function CorrespondencesContainer() {
 
     return (
         <div className="correspondences-container">
-            <CorrespondencesMaker setCorrespondences={setCorrespondences} categories={categories} />
+            <CorrespondencesMaker setCorrespondences={setCorrespondences} categories={categories} intentions={intentions}/>
             <h2>Correspondences</h2>
             <p>
             <label>

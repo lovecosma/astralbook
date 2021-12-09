@@ -15,7 +15,7 @@ class CorrespondencesController < ApplicationController
 
 
     def create
-        correspondence = Correspondence.new(correspondence_params)
+        correspondence = Correspondence.find_or_create_by(correspondence_params)
         if correspondence.save
             render json: correspondence, status: :created
         else 
