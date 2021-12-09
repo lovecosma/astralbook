@@ -13,6 +13,12 @@ class IntentionsController < ApplicationController
         end
     end
 
+    def update 
+        intention = Intention.find(params[:id])
+        binding.pry
+
+    end
+
 
 
 
@@ -20,7 +26,7 @@ class IntentionsController < ApplicationController
     private 
 
     def intention_params
-        params.require(:intention).permit(:name, :desc)
+        params.require(:intention).permit(:name, :desc, :correspondences_attributes)
     end
 
 end

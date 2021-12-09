@@ -17,7 +17,7 @@ export default function CorrespondencesContainer() {
         // .then(resp => resp.json())
         // .then(setCorrespondences)
         const fetchInfo = async () => {
-            let resp = await fetch("/intentions")
+            let resp = await fetch("/api/intentions")
             let intentionsData = await resp.json()
             setIntentions(intentionsData)
     

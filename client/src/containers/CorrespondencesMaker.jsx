@@ -33,21 +33,23 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                        return [...prev, data]
                     })
                 })
+                associateCorrespondence(data)
             }else {
                 resp.json().then(error => console.log(error.errors));
+                associateCorrespondence(data)
             }
         })
     }
 
-    const associateCorrespondence = async (correspondence) => {
+    const associateCorrespondence = async ({correspondence}) => {
 
         let params = {
             intention: {
-                correspondence
+                correspondences_attributes: [correspondence]
             }
         }
 
-        let resp = fetch(`/api/intentions/${intentionId}`, {
+        let resp = await fetch(`/api/intentions/${intentionId}`, {
             method: "PATCH", 
             headers: {
                 "Accept": "application/json",
@@ -55,9 +57,10 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             },
             body: JSON.stringify(params) 
         })
+
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         let name_array = correspondenceNames.split(', ')
         let correspondenceData = name_array.map(name => {
@@ -71,7 +74,6 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
 
         correspondenceData.forEach(c => {
             createCorrespondence(c)
-            associateCorrespondence(c)
         })
         
     }
