@@ -64,7 +64,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences}) {
     return (
         <div>
             <form onSubmit={handleSubmit} >
-                <input type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
+                <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <div class="input-field col s12">
                     <select onChange={handleSelect}>
                         <option value="" disabled selected>Choose your option</option>

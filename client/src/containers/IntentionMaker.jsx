@@ -12,7 +12,7 @@ export default function IntentionMaker() {
                 desc
             }
         }
-        fetch("/categories", {
+        fetch("/intentions", {
             method: "POST",
             headers: {
                 "Accept": "application/json",

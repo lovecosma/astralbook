@@ -24,9 +24,9 @@ export default function CategoryMaker() {
     }
 
     return (
-        <div>
+        <div className="categories-container">
            <form onSubmit={handleSubmit}>
-                <input onChange={e => setTitle(e.target.value)}type="text" name="title" value={title}/> 
+                <input placeholder="title" onChange={e => setTitle(e.target.value)}type="text" name="title" value={title}/> 
                 <button type="submit">Create Category</button> 
             </form> 
         </div>
