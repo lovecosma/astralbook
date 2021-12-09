@@ -23,6 +23,10 @@ class CorrespondencesController < ApplicationController
         end 
     end
 
+    def delete
+        Correspondence.find(params[:id]).destroy
+    end
+
 
     private 
 

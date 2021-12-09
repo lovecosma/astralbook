@@ -7,7 +7,7 @@ export default function CorrespondencesContainer() {
     const [correspondences, setCorrespondences] = useState([])
     const [categories, setCategories] = useState([])
     const [name, setName] = useState("")
-
+    const [editing, setEditing] = useState(false);
    
 
     useEffect(() => {
@@ -23,7 +23,21 @@ export default function CorrespondencesContainer() {
         })
     }, [])
 
-    
+    const handleDelete = (id) => {
+        fetch(`/api/correspondences/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            setCorrespondences((prev) => {
+                return prev.filter(cor => cor.id !== id)
+            })
+        })
+    }
 
 
 
@@ -31,10 +45,18 @@ export default function CorrespondencesContainer() {
         <div>
                 <CorrespondencesMaker setCorrespondences={setCorrespondences} categories={categories} />
                 <h2>Correspondences</h2>
+                <p>
+                <label>
+                    <input onClick={() => {
+                        setEditing(!editing)
+                    }} type="checkbox" />
+                    <span>Editing</span>
+                </label>
+                </p>
                 {correspondences.map(cor => {
                     return (
                         <div>
-                            <h3>{`Correspondence.create(name: "${cor.name}", category_id: ${cor.category_id})`}</h3>
+                            <h3>{`Correspondence.create(name: "${cor.name}", category_id: ${cor.category_id})`} {editing && <button ocClick={() => handleDelete(cor.id)}>X</button>}</h3>
                         </div>
                     )
                 })}
