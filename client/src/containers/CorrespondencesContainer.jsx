@@ -11,6 +11,9 @@ export default function CorrespondencesContainer() {
    
 
     useEffect(() => {
+        // fetch('/api/correspondences')
+        // .then(resp => resp.json())
+        // .then(setCorrespondences)
         fetch("/api/categories")
         .then(resp => resp.json())
         .then(data => {

@@ -9,4 +9,6 @@ class Correspondence < ApplicationRecord
         cor = Correspondence.find_by(name: self.name, category_id: self.category_id)
         self.errors.add(:name, "already exists within this category") if !!cor
     end
+
+
 end
