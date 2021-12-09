@@ -21,7 +21,7 @@ export default function IntentionMaker() {
                 desc
             }
         }
-        fetch("/intentions", {
+        fetch("/api/intentions", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -30,6 +30,7 @@ export default function IntentionMaker() {
             body: JSON.stringify(params)
         })
         .then(resp => resp.json())
+        .then(intentionData => {setIntentions([...intentions, intentionData]); setName(""); setDesc("")})
     }
 
     return (
