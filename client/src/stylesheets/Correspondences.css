@@ -1,3 +1,8 @@
 .correspondences-container{
     padding: 50px
 }
+
+.intentions-container{
+    height: 300px;
+    overflow: scroll
+}

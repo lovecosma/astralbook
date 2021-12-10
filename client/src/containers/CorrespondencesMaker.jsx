@@ -58,6 +58,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         })
         let intentionData = await resp.json()
         setIntention(intentionData)
+        setCorrespodenceNames("")
 
     }
 
@@ -67,7 +68,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         let correspondenceData = name_array.map(name => {
             return {
                correspondence: {
-                    name,
+                    name: name.trim(),
                     category_id: categoryId
                }
             }
@@ -98,6 +99,15 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     return (
         <div>
             <form onSubmit={handleSubmit} >
+                <div class="input-field col s12">
+                    <select onChange={handleIntentionSelect}>
+                        <option value="" disabled selected>Choose your option</option>
+                        {intentions.map(i => {
+                            return <option value={i.id}>{i.name}</option>
+                        })}
+                    </select>
+                    <label>Intention Select</label>
+                </div>
                 <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <div class="input-field col s12">
                     <select onChange={handleSelect}>
@@ -108,25 +118,18 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                     </select>
                     <label>Category Select</label>
                 </div>
-                <div class="input-field col s12">
-                    <select onChange={handleIntentionSelect}>
-                        <option value="" disabled selected>Choose your option</option>
-                        {intentions.map(i => {
-                            return <option value={i.id}>{i.name}</option>
-                        })}
-                    </select>
-                    <label>Intention Select</label>
-                </div>
                 <button type="submit">Create Correspondences</button>
             </form>
             {intention.id && 
             <div>
                 <h3>{intention.name}</h3>
-                {intention.correspondences.map(c => {
-                    return (
-                        <div>{c.name}</div>
-                    )
-                })}
+                <div className="intentions-conatiner" >
+                    {intention.correspondences.map(c => {
+                        return (
+                            <div>{c.name}</div>
+                        )
+                    })}
+                </div>
             </div>
             }
         </div>
