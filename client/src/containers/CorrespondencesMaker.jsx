@@ -6,7 +6,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     const [correspondenceNames, setCorrespodenceNames] = useState("")
     const [categoryId, setCategoryId] = useState(null)
     const [intentionId, setIntentionId] = useState(null)
-
+    const [intention, setIntention] = useState({})
     useEffect(() => {
         let elems = document.querySelectorAll('select');
         M.FormSelect.init(elems, {});
@@ -33,11 +33,10 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                        return [...prev, data]
                     })
                 })
-                associateCorrespondence(data)
             }else {
                 resp.json().then(error => console.log(error.errors));
-                associateCorrespondence(data)
             }
+        associateCorrespondence(data)
         })
     }
 
@@ -57,6 +56,8 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             },
             body: JSON.stringify(params) 
         })
+        let intentionData = await resp.json()
+        setIntention(intentionData)
 
     }
 
@@ -83,8 +84,15 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         setCategoryId(e.target.value)
     }
 
+    const fetchIntention = id => {
+        fetch(`/api/intentions/${id}`)
+        .then(resp => resp.json())
+        .then(setIntention)
+    }
+
     const handleIntentionSelect = (e) => {
         setIntentionId(e.target.value)
+        fetchIntention(e.target.value)
     }   
 
     return (
@@ -111,6 +119,16 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                 </div>
                 <button type="submit">Create Correspondences</button>
             </form>
+            {intention.id && 
+            <div>
+                <h3>{intention.name}</h3>
+                {intention.correspondences.map(c => {
+                    return (
+                        <div>{c.name}</div>
+                    )
+                })}
+            </div>
+            }
         </div>
     )
 }

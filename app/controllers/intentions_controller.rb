@@ -3,6 +3,10 @@ class IntentionsController < ApplicationController
         render json: Intention.all
     end
 
+    def show
+        render json: Intention.find(params[:id]), include: :correspondences
+    end
+
 
     def create
         intention = Intention.new(intention_params)
@@ -15,7 +19,11 @@ class IntentionsController < ApplicationController
 
     def update 
         intention = Intention.find(params[:id])
-        binding.pry
+        if(intention.update(intention_params))
+            render json: intention, include: :correspondences, status: :ok
+        else
+            render json: {errors: "There was an error saving this correspondence to this intention"}
+        end 
 
     end
 
@@ -26,7 +34,7 @@ class IntentionsController < ApplicationController
     private 
 
     def intention_params
-        params.require(:intention).permit(:name, :desc, :correspondences_attributes)
+        params.require(:intention).permit(:name, :desc, {:correspondences_attributes => [:name, :category_id]})
     end
 
 end
