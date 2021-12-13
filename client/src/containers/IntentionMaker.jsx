@@ -43,7 +43,9 @@ export default function IntentionMaker() {
             <h1>Intentions</h1>
             {intentions.map(i => {
                 return (
-                    <div>{i.name}</div>
+                    <div>
+                        {i.name}
+                    </div>
                 )
             })}
         </div>

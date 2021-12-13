@@ -51,7 +51,7 @@ export default function CorrespondencesContainer() {
     return (
         <div className="correspondences-container">
             <CorrespondencesMaker setCorrespondences={setCorrespondences} categories={categories} intentions={intentions}/>
-            <h2>Correspondences</h2>
+            {/* <h2>Correspondences</h2>
             <p>
             <label>
                 <input onClick={() => {
@@ -59,14 +59,7 @@ export default function CorrespondencesContainer() {
                 }} type="checkbox" />
                 <span>Editing</span>
             </label>
-            </p>
-            {correspondences.map(cor => {
-                return (
-                    <div>
-                        <h3>{`Correspondence.create(name: "${cor.name}", category_id: ${cor.category_id})`} {editing && <button ocClick={() => handleDelete(cor.id)}>X</button>}</h3>
-                    </div>
-                )
-            })}
+            </p> */}
         </div>
     )
 }

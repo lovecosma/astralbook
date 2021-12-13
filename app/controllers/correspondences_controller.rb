@@ -23,8 +23,15 @@ class CorrespondencesController < ApplicationController
         end 
     end
 
-    def delete
-        Correspondence.find(params[:id]).destroy
+    def destroy
+        if params[:intention_id]
+            intention = Intention.find_by(name: params[:intention_id])
+            intention.correspondences.delete(params[:id])
+            head :ok
+        else  
+            Correspondence.find(params[:id]).destroy
+            head :ok
+        end
     end
 
 

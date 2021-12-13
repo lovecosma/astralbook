@@ -59,7 +59,6 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         let intentionData = await resp.json()
         setIntention(intentionData)
         setCorrespodenceNames("")
-
     }
 
     const handleSubmit = async (e) => {
@@ -96,6 +95,44 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         fetchIntention(e.target.value)
     }   
 
+    const deleteFromDB = (id) => {
+        fetch(`/api/correspondences/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+        .then((resp) => {
+            if(resp.ok){
+                alert("Correspondence deleted from database")
+                setCorrespondences((prev) => {
+                    return prev.filter(cor => cor.id !== id)
+                })
+            }else {
+                alert("Check API")
+            }
+        })
+    }
+
+    const removeFromIntention = (correspondence_id, intention_id) => {
+        fetch(`/api/intentions/${intention_id}/correspondences/${correspondence_id}`,{
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+        .then(resp => {
+            if(resp.ok){
+                alert("Correspondence removed from intention.")
+                intention.correspondences = intention.correspondences.filter(cor => cor.id !== correspondence_id)
+            }else {
+                alert("Check API")
+            }
+        })
+    }
+
     return (
         <div>
             <form onSubmit={handleSubmit} >
@@ -108,7 +145,6 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                     </select>
                     <label>Intention Select</label>
                 </div>
-                <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <div class="input-field col s12">
                     <select onChange={handleSelect}>
                         <option value="" disabled selected>Choose your option</option>
@@ -118,6 +154,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                     </select>
                     <label>Category Select</label>
                 </div>
+                <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <button type="submit">Create Correspondences</button>
             </form>
             {intention.id && 
@@ -126,7 +163,14 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                 <div className="intentions-conatiner" >
                     {intention.correspondences.map(c => {
                         return (
-                            <div>{c.name}</div>
+                            <div>
+                                {c.name} - {categories.find(category => category.id === c.category_id).title}<br/>
+                                <button onClick={() => deleteFromDB(c.id)}>Delete from DB</button>
+                                <button onClick={() => removeFromIntention(c.id, intention.id)}>Delete from Intention Only</button>
+                                <br/>
+                                <br/>
+                            </div>
+                            
                         )
                     })}
                 </div>
