@@ -168,7 +168,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             <div>
                 <h3>{intention.name}</h3>
                 <div className="intentions-conatiner" >
-                {intention.correspondences.map(c => {
+                {intention.correspondences.sort().map(c => {
                             return (
                                 <div>
                                     {c.name} - {categories.find(category => category.id === c.category_id).title} {editing && 
