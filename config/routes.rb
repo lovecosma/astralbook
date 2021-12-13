@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     end
     resources :correspondences, :only => [:index, :create, :destroy]
     resources :intentions do 
+      resources :subcategories
       resources :correspondences, :only => [:destroy]
     end
   end
