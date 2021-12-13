@@ -7,6 +7,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     const [categoryId, setCategoryId] = useState(null)
     const [intentionId, setIntentionId] = useState(null)
     const [intention, setIntention] = useState({})
+    const [editing, setEditing] = useState(false)
     useEffect(() => {
         let elems = document.querySelectorAll('select');
         M.FormSelect.init(elems, {});
@@ -156,23 +157,30 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                 </div>
                 <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <button type="submit">Create Correspondences</button>
+                <p>
+                <label>
+                    <input onClick={() => setEditing(prev => !prev)} type="checkbox" />
+                    <span>Editing</span>
+                </label>
+                </p>
             </form>
             {intention.id && 
             <div>
                 <h3>{intention.name}</h3>
                 <div className="intentions-conatiner" >
-                    {intention.correspondences.map(c => {
-                        return (
-                            <div>
-                                {c.name} - {categories.find(category => category.id === c.category_id).title}<br/>
-                                <button onClick={() => deleteFromDB(c.id)}>Delete from DB</button>
-                                <button onClick={() => removeFromIntention(c.id, intention.id)}>Delete from Intention Only</button>
-                                <br/>
-                                <br/>
-                            </div>
-                            
-                        )
-                    })}
+                {intention.correspondences.map(c => {
+                            return (
+                                <div>
+                                    {c.name} - {categories.find(category => category.id === c.category_id).title} {editing && 
+                                    <div>
+                                        <button onClick={() => deleteFromDB(c.id)}>Delete from DB</button>
+                                        <button onClick={() => removeFromIntention(c.id, intention.id)}>Delete from Intention Only</button>
+                                    </div>
+                                    }
+                                </div>
+                                
+                            )
+                        })}
                 </div>
             </div>
             }
