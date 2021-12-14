@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SubcategoriesControllerTest < ActionDispatch::IntegrationTest
+class SubintentionsControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

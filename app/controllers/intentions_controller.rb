@@ -34,7 +34,11 @@ class IntentionsController < ApplicationController
     private 
 
     def intention_params
-        params.require(:intention).permit(:name, :desc, {:correspondences_attributes => [:name, :category_id]})
+        params.require(:intention).permit(
+            :name, 
+            :desc, 
+            {:correspondences_attributes => [:name, :category_id, :subcategory_id]}
+        )
     end
 
 end
