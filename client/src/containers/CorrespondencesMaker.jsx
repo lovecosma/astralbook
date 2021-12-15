@@ -11,7 +11,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     const [intention, setIntention] = useState({})
     const [editing, setEditing] = useState(false)
     const [creatingSubCategory, setCreatingSubCategory] = useState(false)
-    const [subintentionTitle, setSubintentionTitle] = useState("")
+    const [subintentionName, setsubintentionName] = useState("")
     const [subintentions, setSubintentions] = useState([])
 
     useEffect(() => {
@@ -120,11 +120,12 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         e.preventDefault();
         
         let params = {
-            subcategory: {
-                title: subintentionTitle,
+            subintention: {
+                name: subintentionName,
+                intention_id: intentionId
             }
         }
-        fetch(`/api/intentions/${intentionId}/subintentions`, {
+        fetch(`/api/subintentions`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -136,8 +137,8 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             if (resp.ok) {
                 resp.json().then(subcat => {
                     setSubintentions(prev => [...prev, subcat])
-                    alert("Subcategory successfully created.")
-                    setSubintentionTitle("")
+                    alert("Subintention successfully created.")
+                    setsubintentionName("")
                 })
             } else {
                 resp.json().then(error => alert(error.errors))
@@ -189,7 +190,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             <br/>
             {creatingSubCategory ? 
                 <form onSubmit={(createSubCategory)}>
-                    <input type="text" name="intention_subcategory" onChange={(e) => setSubintentionTitle(e.target.value)} value={subintentionTitle}/>
+                    <input type="text" name="intention_subcategory" onChange={(e) => setsubintentionName(e.target.value)} value={subintentionName}/>
                     <button type="submit">Create subCategory</button>
                 </form> :
                 <CollectionSelect handleSelect={(e) => setSubintentionId(e.target.value)} collection={subintentions} attr={"name"} title={"Subintention"}/>
