@@ -8,7 +8,9 @@ class Intention < ApplicationRecord
 
     def correspondences_attributes=(correspondences)
         correspondences.each do |c|
-            correspondence = Correspondence.find_by(c)
+            actual_name = c[:name].split(" (").first.strip
+            notes_arr = c[:name].split(" (").last.split(")").last.split("/")
+            correspondence = Correspondence.find_or_create_by(name: actual_name, category_id: c.category_id)
             self.correspondences << correspondence if !self.correspondences.include? correspondence && correspondence
         end
     end
