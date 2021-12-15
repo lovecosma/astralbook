@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :notes
   resources :subintentions
   scope :api do 
     resources :categories do 
@@ -6,7 +7,12 @@ Rails.application.routes.draw do
     end
     resources :correspondences, :only => [:index, :create, :destroy]
     resources :intentions do 
-          resources :correspondences, :only => [:destroy]
+          resources :correspondences, :only => [:create, :destroy]
+    end
+    resources :intentions do
+      resources :subintentions do
+          resources :correspondences
+      end
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

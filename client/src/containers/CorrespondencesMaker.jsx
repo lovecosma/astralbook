@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import M from "materialize-css"
+import CollectionSelect from '../components/CollectionSelect'
 
 export default function CorrespondencesMaker({categories, setCorrespondences, intentions}) {
 
     const [correspondenceNames, setCorrespodenceNames] = useState("")
     const [categoryId, setCategoryId] = useState(null)
     const [intentionId, setIntentionId] = useState(null)
-    const [subCategoryId, setSubCategoryId] = useState(null)
+    const [subintentionId, setSubintentionId] = useState(null)
     const [intention, setIntention] = useState({})
     const [editing, setEditing] = useState(false)
     const [creatingSubCategory, setCreatingSubCategory] = useState(false)
-    const [subCategoryTitle, setSubCategoryTitle] = useState("")
-    const [subcategories, setSubcategories] = useState([])
+    const [subintentionTitle, setSubintentionTitle] = useState("")
+    const [subintentions, setSubintentions] = useState([])
 
     useEffect(() => {
        if(!creatingSubCategory){
@@ -26,24 +27,13 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     }
 
     const createCorrespondence = (data) => {
-        let params;
-        if(Number(subCategoryId)){
-            params = {
-                ...data, 
-                subcategory_id: subCategoryId
-            }
-        } else {
-            params = {
-                ...data
-            }
-        }
-        fetch('/api/correspondences', {
+        fetch(`/api/intentions/${intentionId}/correspondences`, {
             method: "POST", 
             headers: {
                "Accept": "application/json",
                "Content-Type": 'application/json'
             },
-            body: JSON.stringify(params)
+            // body: JSON.stringify(params)
         })
         .then(resp => {
             if(resp.ok){
@@ -62,12 +52,6 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
 
     const associateCorrespondence = async ({correspondence}) => {
         let correspondence_data;
-        if(Number(subCategoryId)){
-            correspondence_data = {
-                ...correspondence,
-                subcategory_attributes: [{title: }] 
-            }
-        }
         let params = {
             intention: {
                 correspondences_attributes: [correspondence]
@@ -98,16 +82,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                }
             }
         })
-
-        correspondenceData.forEach(c => {
-            createCorrespondence(c)
-        })
         
-    }
-
-
-    const handleSelect = (e) => {
-        setCategoryId(e.target.value)
     }
 
     const fetchIntention = id => {
@@ -146,10 +121,10 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         
         let params = {
             subcategory: {
-                title: subCategoryTitle,
+                title: subintentionTitle,
             }
         }
-        fetch(`/api/intentions/${intentionId}/subcategories`, {
+        fetch(`/api/intentions/${intentionId}/subintentions`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -160,9 +135,9 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         .then(resp => {
             if (resp.ok) {
                 resp.json().then(subcat => {
-                    setSubcategories(prev => [...prev, subcat])
+                    setSubintentions(prev => [...prev, subcat])
                     alert("Subcategory successfully created.")
-                    setSubCategoryTitle("")
+                    setSubintentionTitle("")
                 })
             } else {
                 resp.json().then(error => alert(error.errors))
@@ -188,40 +163,21 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         })
     }
 
-    const handleSubCategorySelect = (e) => {
-        setSubCategoryId(e.target.value)
-    }
+   
 
     return (
         <div>
             <form onSubmit={handleSubmit} >
-                <div class="input-field col s12">
-                    <select onChange={handleIntentionSelect}>
-                        <option value="" disabled selected>Choose your option</option>
-                        {intentions.map(i => {
-                            return <option value={i.id}>{i.name}</option>
-                        })}
-                    </select>
-                    <label>Intention Select</label>
-                </div>
-                <div class="input-field col s12">
-                    <select onChange={handleSelect}>
-                        <option value="" disabled selected>Choose your option</option>
-                        {categories.map(cat => {
-                            return <option value={cat.id}>{cat.title}</option>
-                        })}
-                    </select>
-                    <label>Category Select</label>
-                </div>
+                <CollectionSelect handleSelect={handleIntentionSelect} collection={intentions} attr={"name"} title={"Intention"} />
+                <CollectionSelect handleSelect={(e) => setCategoryId(e.target.value)} collection={categories} attr={"title"} title={"Category"}/>
                 <br/>
-
                 <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <button type="submit">Create Correspondences</button>
                 <p>
-                <label>
-                    <input onClick={() => setEditing(prev => !prev)} type="checkbox" />
-                    <span>Editing</span>
-                </label>
+                    <label>
+                        <input onClick={() => setEditing(prev => !prev)} type="checkbox" />
+                        <span>Editing</span>
+                    </label>
                 </p>
                 <p>
                 <label>
@@ -233,18 +189,10 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             <br/>
             {creatingSubCategory ? 
                 <form onSubmit={(createSubCategory)}>
-                    <input type="text" name="intention_subcategory" onChange={(e) => setSubCategoryTitle(e.target.value)} value={subCategoryTitle}/>
+                    <input type="text" name="intention_subcategory" onChange={(e) => setSubintentionTitle(e.target.value)} value={subintentionTitle}/>
                     <button type="submit">Create subCategory</button>
                 </form> :
-                <div class="input-field col s12">
-                    <select onChange={handleSubCategorySelect}>
-                        <option value="" disabled selected>Choose your option</option>
-                        {subcategories.map(sub => {
-                            return <option value={sub.id}>{sub.title}</option>
-                        })}
-                </select>
-                <label>Subcategory Select</label>
-                </div>
+                <CollectionSelect handleSelect={(e) => setSubintentionId(e.target.value)} collection={subintentions} attr={"name"} title={"Subintention"}/>
                 }
             {intention.id && 
             <div>

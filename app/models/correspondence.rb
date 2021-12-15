@@ -4,6 +4,7 @@ class Correspondence < ApplicationRecord
     belongs_to :category
     validates :name, presence: true
     validate :uniqueness_within_category
+    has_and_belongs_to_many :notes
 
     def uniqueness_within_category
         cor = Correspondence.find_by(name: self.name, category_id: self.category_id)
