@@ -5,21 +5,25 @@ import CollectionSelect from '../components/CollectionSelect'
 export default function CorrespondencesMaker({categories, setCorrespondences, intentions}) {
 
     const [correspondenceNames, setCorrespodenceNames] = useState("")
+
     const [categoryId, setCategoryId] = useState(null)
     const [intentionId, setIntentionId] = useState(null)
     const [subintentionId, setSubintentionId] = useState(null)
+    const [items, setItems] = useState([])
+
     const [intention, setIntention] = useState({})
+
     const [editing, setEditing] = useState(false)
-    const [creatingSubCategory, setCreatingSubCategory] = useState(false)
+    const [creatingSubintention, setCreatingSubintention] = useState(false)
     const [subintentionName, setsubintentionName] = useState("")
     const [subintentions, setSubintentions] = useState([])
 
     useEffect(() => {
-       if(!creatingSubCategory){
+       if(!creatingSubintention){
             let elems = document.querySelectorAll('select');
             M.FormSelect.init(elems, {});
        }
-    }, [creatingSubCategory, intention, subintentions])
+    }, [creatingSubintention, intention, subintentions])
 
 
     const handleChange = (e) => {
@@ -70,22 +74,34 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     const handleSubmit = async (e) => {
         e.preventDefault()
         let name_array = correspondenceNames.split(', ')
-        let correspondenceData = name_array.map(name => {
-           if(subintentionId === ""){
-                return {
-                    name: name.trim(),
+        let itemsData = name_array.map(name => {
+            return {
+                correspondence: {
+                    name, 
                     category_id: categoryId
                 }
-           } else {
-               return {
-                    name: name.trim(),
-                    category_id: categoryId,
-                    subintention_id: subintentionId
-               }
-           }
+            }
         })
-        debugger
-        associateCorrespondences(correspondenceData)
+       
+        
+    }
+
+    const find_or_create_item = (itemData) => {
+        fetch("/api/items", {
+            method: "POST", 
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(itemData)
+        })
+        .then(resp => {
+            if (resp.ok) {
+                resp.json().then(data => setItems((prev) => [...prev, data]))
+            } else {
+                resp.json(error => alert(error.errors))
+            }
+        })
     }
 
     const fetchIntention = id => {
@@ -188,7 +204,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                 </p>
                 <p>
                 <label>
-                    <input onClick={() => setCreatingSubCategory(prev => !prev)} type="checkbox" />
+                    <input onClick={() => setCreatingSubintention(prev => !prev)} type="checkbox" />
                     <span>Show subcategory create</span>
                 </label>
                 </p>
@@ -196,7 +212,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             <br/>
             {intention.id && 
             <div>
-                {creatingSubCategory ? 
+                {creatingSubintention ? 
                     <form onSubmit={(createSubCategory)}>
                         <input type="text" name="intention_subcategory" onChange={(e) => setsubintentionName(e.target.value)} value={subintentionName}/>
                         <button type="submit">Create subCategory</button>

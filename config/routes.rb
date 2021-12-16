@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
+  resources :notes
   scope :api do 
-    resources :notes
-    resources :subintentions
-    resources :categories do 
+        resources :categories do 
       resources :correspondences, :only => [:index]
     end
     resources :correspondences, :only => [:index, :create, :destroy]
