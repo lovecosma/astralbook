@@ -10,7 +10,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     const [intentionId, setIntentionId] = useState(null)
     
     const [intention, setIntention] = useState({})
-    
+    const [recentlyAdded, setRecentlyAdded] = useState([])
     const [editing, setEditing] = useState(false)
     
     useEffect(() => {
@@ -26,6 +26,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setRecentlyAdded([])
         let name_array = correspondenceNames.split(', ')
         let itemsData = name_array.map(name => {
             let actual_name = name.split(" (")[0]
@@ -59,6 +60,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             if(resp.ok){
                 resp.json().then(correspondenceData => {
                    if(intention.correspondences.filter(cor => cor.id === correspondenceData.id).length === 0){
+                       setRecentlyAdded(prev => [...prev, correspondenceData])
                         setIntention(prev => {
                             return {
                                 ...prev,
@@ -148,19 +150,12 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             <br/>
             {intention.id && 
             <div>
+                <div>
+                    {recentlyAdded.map(c => <div>{c.name} - {c.category.title} {c.notes.filter(note => note.intention_id === intention.id).map(note => `- ${note.content} `)}</div>)}
+                </div>
                 <h3>{intention.name}</h3>
                 <div className="intentions-conatiner" >
-                {intention.correspondences.sort((a,b) =>{ 
-                   let nameA = a.category_id
-                   let nameB =  b.category_id
-                    if (nameA < nameB) {
-                        return -1;
-                      }
-                      if (nameA > nameB) {
-                        return 1;
-                      }
-                        return 0;
-                    }).map(c => {
+                {intention.correspondences.map(c => {
                             return (
                                 <div>
                                     {c.name} - {c.category.title} {c.notes.filter(note => note.intention_id === intention.id).map(note => `- ${note.content} `)}
