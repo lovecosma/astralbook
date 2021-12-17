@@ -11,4 +11,7 @@ class Correspondence < ApplicationRecord
 
 
 
+
+
+
 end

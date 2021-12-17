@@ -18,7 +18,8 @@ class CorrespondencesController < ApplicationController
        if params[:intention_id]
            intention = Intention.find(params[:intention_id])
            if intention
-              correspondence = Correspondence.find_or_create_by(correspondence_params)
+            binding.pry
+              correspondence = Correspondence.find_or_create_by(name: correspondence_params[:name], category_id: correspondence_params[:category_id])
             if correspondence.valid?
                 intention.correspondences << correspondence unless intention.correspondences.include? correspondence 
                 render json: correspondence, status: :ok

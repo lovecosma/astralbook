@@ -3,103 +3,69 @@ import M from "materialize-css"
 import CollectionSelect from '../components/CollectionSelect'
 
 export default function CorrespondencesMaker({categories, setCorrespondences, intentions}) {
-
+    
     const [correspondenceNames, setCorrespodenceNames] = useState("")
-
+    
     const [categoryId, setCategoryId] = useState(null)
     const [intentionId, setIntentionId] = useState(null)
-    const [subintentionId, setSubintentionId] = useState(null)
-    const [items, setItems] = useState([])
-
+    
     const [intention, setIntention] = useState({})
-
+    
     const [editing, setEditing] = useState(false)
-    const [creatingSubintention, setCreatingSubintention] = useState(false)
-    const [subintentionName, setsubintentionName] = useState("")
-    const [subintentions, setSubintentions] = useState([])
-
+    
     useEffect(() => {
-       if(!creatingSubintention){
-            let elems = document.querySelectorAll('select');
-            M.FormSelect.init(elems, {});
-       }
-    }, [creatingSubintention, intention, subintentions])
-
-
+        let elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems, {});
+    }, [intention])
+    
+    
     const handleChange = (e) => {
         setCorrespodenceNames(e.target.value)
     }
-
-    const createCorrespondenceWithSubintention = (correspondence) => {
-        let params = {
-            correspondence
-        }
-        fetch(`/api/intentions/${intentionId}/subintentions/${subintentionId}/correspondences`, {
+    
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        let name_array = correspondenceNames.split(', ')
+        let itemsData = name_array.map(name => {
+            let actual_name = name.split(" (")[0]
+            let split_array = name.split(" (")
+            let note;
+            if(split_array.length > 1){
+                note = split_array[1].split(")")[0].split("/").map(note => note.trim()).join(", ")
+            }
+            return {
+                correspondence: {
+                    name: actual_name, 
+                    category_id: categoryId,
+                    note
+                }
+            }
+        })
+        itemsData.forEach(correspondence => createIntentionCorrespondence(correspondence))
+    }
+    const createIntentionCorrespondence = (correspondence) => {
+        
+        fetch(`/api/intentions/${intentionId}/correspondences`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(params)
-        })
-        // .then(resp => {
-        //     if(resp.ok){
-        //         resp.json().then(correspondenceData => setCorrespondences(prev => [...prev, corres]))
-        //     } else{
-
-        //     }
-        // })
-    }
-
-    const associateCorrespondences = async (correspondenceData) => {
-        let params = {
-            intention: {
-                correspondences_attributes: correspondenceData
-            }
-        }
-
-        let resp = await fetch(`/api/intentions/${intentionId}`, {
-            method: "PATCH", 
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(params) 
-        })
-        let intentionData = await resp.json()
-        setIntention(intentionData)
-        setCorrespodenceNames("")
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        let name_array = correspondenceNames.split(', ')
-        let itemsData = name_array.map(name => {
-            return {
-                correspondence: {
-                    name, 
-                    category_id: categoryId
-                }
-            }
-        })
-       
-        
-    }
-
-    const find_or_create_item = (itemData) => {
-        fetch("/api/items", {
-            method: "POST", 
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(itemData)
+            body: JSON.stringify(correspondence)
         })
         .then(resp => {
-            if (resp.ok) {
-                resp.json().then(data => setItems((prev) => [...prev, data]))
-            } else {
-                resp.json(error => alert(error.errors))
+            if(resp.ok){
+                resp.json().then(correspondenceData => {
+                    setIntention(prev => {
+                        return {
+                            ...prev,
+                            correspondences: [...prev.correspondences, correspondenceData]
+                        }
+                    })
+                })
+            }else{
+                resp.json().then(error => alert(error.errors))
             }
         })
     }
@@ -109,7 +75,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         .then(resp => resp.json())
         .then((intent) => {
             setIntention({...intent})
-            setSubintentions([...intent.subintentions])
+            setCorrespondences([...intent.correspondences])
         })
     }
 
@@ -134,36 +100,6 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                 })
             }else {
                 alert("Check API")
-            }
-        })
-    }
-
-    const createSubCategory = (e) => {
-        e.preventDefault();
-        
-        let params = {
-            subintention: {
-                name: subintentionName,
-                intention_id: intentionId
-            }
-        }
-        fetch(`/api/subintentions`, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(params) 
-        })
-        .then(resp => {
-            if (resp.ok) {
-                resp.json().then(subintention => {
-                    setSubintentions(prev => [...prev, subintention])
-                    alert("Subintention successfully created.")
-                    setsubintentionName("")
-                })
-            } else {
-                resp.json().then(error => alert(error.errors))
             }
         })
     }
@@ -202,23 +138,10 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                         <span>Editing</span>
                     </label>
                 </p>
-                <p>
-                <label>
-                    <input onClick={() => setCreatingSubintention(prev => !prev)} type="checkbox" />
-                    <span>Show subcategory create</span>
-                </label>
-                </p>
             </form>
             <br/>
             {intention.id && 
             <div>
-                {creatingSubintention ? 
-                    <form onSubmit={(createSubCategory)}>
-                        <input type="text" name="intention_subcategory" onChange={(e) => setsubintentionName(e.target.value)} value={subintentionName}/>
-                        <button type="submit">Create subCategory</button>
-                    </form> :
-                    <CollectionSelect handleSelect={(e) => setSubintentionId(e.target.value)} collection={subintentions} attr={"name"} title={"Subintention"}/>
-                    }
                 <h3>{intention.name}</h3>
                 <div className="intentions-conatiner" >
                 {intention.correspondences.sort(c => c.category_id).map(c => {
