@@ -18,12 +18,14 @@ class CorrespondencesController < ApplicationController
        if params[:intention_id]
            intention = Intention.find(params[:intention_id])
            if intention
-              correspondence = Correspondence.new(correspondence_params)
-              if correspondence.save
-                render json: correspondence, status: :created
-                else 
-                    render json: {errors: correspondence.errors.full_messages}, status: :unprocessable_entity
-                end 
+              correspondence = Correspondence.find_or_create_by(correspondence_params)
+            if correspondence.valid?
+                intention.correspondences << correspondence unless intention.correspondences.include? correspondence 
+                render json: correspondence, status: :ok
+            else 
+                render json: {errors: correspondence.errors.full_messages}, status: :unprocessable_entity
+            end 
+
            else
                render json: {errors: "Intention not found."}, status: :unprocessable_entity
            end

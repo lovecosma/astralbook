@@ -9,7 +9,7 @@ class Intention < ApplicationRecord
     def correspondences_attributes=(correspondences)
         correspondences.each do |c|
             actual_name = c[:name].split(" (").first.strip
-            correspondence = Correspondence.find_or_create_by(name: actual_name, category_id: c[:category_id])
+            correspondence = Correspondence.find_by(name: actual_name, category_id: c[:category_id])
             c[:name].split(" (").last.split(")").last.split("/").each do |n|
                     correspondence.notes.create(content: n, correspodence_id: correspondence.id, intention_id: self.id)
             end
