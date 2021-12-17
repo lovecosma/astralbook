@@ -21,6 +21,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     
     const handleChange = (e) => {
         setCorrespodenceNames(e.target.value)
+        setRecentlyAdded([])
     }
     
     
@@ -151,6 +152,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             {intention.id && 
             <div>
                 <div>
+                    <h5>Recently Added</h5>
                     {recentlyAdded.map(c => <div>{c.name} - {c.category.title} {c.notes.filter(note => note.intention_id === intention.id).map(note => `- ${note.content} `)}</div>)}
                 </div>
                 <h3>{intention.name}</h3>
