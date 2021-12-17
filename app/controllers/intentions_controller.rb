@@ -4,7 +4,7 @@ class IntentionsController < ApplicationController
     end
 
     def show
-        render json: Intention.find(params[:id]), include: [:correspondences]
+        render json: Intention.find(params[:id])
     end
 
 

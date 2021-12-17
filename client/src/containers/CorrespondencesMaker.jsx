@@ -43,6 +43,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             }
         })
         itemsData.forEach(correspondence => createIntentionCorrespondence(correspondence))
+        setCorrespodenceNames("")
     }
     const createIntentionCorrespondence = (correspondence) => {
         
@@ -57,12 +58,14 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         .then(resp => {
             if(resp.ok){
                 resp.json().then(correspondenceData => {
-                    setIntention(prev => {
-                        return {
-                            ...prev,
-                            correspondences: [...prev.correspondences, correspondenceData]
-                        }
-                    })
+                   if(intention.correspondences.filter(cor => cor.id === correspondenceData.id).length === 0){
+                        setIntention(prev => {
+                            return {
+                                ...prev,
+                                correspondences: [...prev.correspondences, correspondenceData].sort((a, b) => a.category_id > b.category_id)
+                            }
+                        })
+                   }
                 })
             }else{
                 resp.json().then(error => alert(error.errors))
@@ -95,8 +98,11 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         .then((resp) => {
             if(resp.ok){
                 alert("Correspondence deleted from database")
-                setCorrespondences((prev) => {
-                    return prev.filter(cor => cor.id !== id)
+                setIntention(prev => {
+                    return {
+                        ...prev,
+                        correspondences: prev.correspondences.filter(cor => cor.id !== id)
+                    }
                 })
             }else {
                 alert("Check API")
@@ -144,10 +150,21 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             <div>
                 <h3>{intention.name}</h3>
                 <div className="intentions-conatiner" >
-                {intention.correspondences.sort(c => c.category_id).map(c => {
+                {intention.correspondences.sort((a,b) =>{ 
+                   let nameA = a.category_id
+                   let nameB =  b.category_id
+                    if (nameA < nameB) {
+                        return -1;
+                      }
+                      if (nameA > nameB) {
+                        return 1;
+                      }
+                        return 0;
+                    }).map(c => {
                             return (
                                 <div>
-                                    {c.name} - {categories.find(category => category.id === c.category_id).title} {editing && 
+                                    {c.name} - {c.category.title} {c.notes.filter(note => note.intention_id === intention.id).map(note => `- ${note.content} `)}
+                                    {editing && 
                                     <div>
                                         <button onClick={() => deleteFromDB(c.id)}>Delete from DB</button>
                                         <button onClick={() => removeFromIntention(c.id, intention.id)}>Delete from Intention Only</button>

@@ -18,10 +18,13 @@ class CorrespondencesController < ApplicationController
        if params[:intention_id]
            intention = Intention.find(params[:intention_id])
            if intention
-            binding.pry
               correspondence = Correspondence.find_or_create_by(name: correspondence_params[:name], category_id: correspondence_params[:category_id])
             if correspondence.valid?
                 intention.correspondences << correspondence unless intention.correspondences.include? correspondence 
+                if !!correspondence_params[:note]
+                    note = Note.new(intention_id: intention.id, content: correspondence_params[:note], correspondence_id: correspondence.id) 
+                    correspondence.notes << note if note.save 
+                end
                 render json: correspondence, status: :ok
             else 
                 render json: {errors: correspondence.errors.full_messages}, status: :unprocessable_entity
@@ -55,7 +58,7 @@ class CorrespondencesController < ApplicationController
     private 
 
     def correspondence_params
-        params.require(:correspondence).permit(:name, :desc, :category_id)
+        params.require(:correspondence).permit(:name, :desc, :category_id, :note)
     end
 
 end
