@@ -3,7 +3,7 @@ class Intention < ApplicationRecord
     accepts_nested_attributes_for :correspondences
     validates :name, presence: true, uniqueness: true
     has_many :notes, :through => :correspondences
-    
+    has_many :subintentions
 
  
 end

@@ -5,7 +5,8 @@ import CollectionSelect from '../components/CollectionSelect'
 export default function CorrespondencesMaker({categories, setCorrespondences, intentions}) {
     
     const [correspondenceNames, setCorrespodenceNames] = useState("")
-    
+    const [subIntentionName, setSubIntentionName] = useState("")
+
     const [categoryId, setCategoryId] = useState(null)
     const [intentionId, setIntentionId] = useState(null)
     const [subIntentionId, setSubIntentionId] = useState(null)
@@ -86,13 +87,17 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     }
 
     const createSubintentionCorrespondence = (correspondence) => {
-        fetch(`/api/intentions/${subIntentionId}/correspondences`, {
+        let params = {
+            subintention_id: subIntentionId,
+            ...correspondence
+        }
+        fetch(`/api/subintention_correspondences`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(correspondence)
+            body: JSON.stringify(params)
         })
         .then(resp => {
             if(resp.ok){
@@ -173,7 +178,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         e.preventDefault()
         let params = {
             subintention: {
-                name: ''
+                name: subIntentionName
             }
         }
         fetch(`/api/intentions/${intentionId}/subintentions`, {
@@ -203,7 +208,7 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                 <CollectionSelect handleSelect={handleIntentionSelect} collection={intentions} attr={"name"} title={"Intention"} />
             {creatingSubintention ? 
                 <div>
-                    <input type="text" name="subIntentionId"/>
+                    <input type="text" onChange={(e) => setSubIntentionName(e.target.value)}/>
                     <button onClick={createSubintention}>Create New Subintention</button>
                 </div>
             :

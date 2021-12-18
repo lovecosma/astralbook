@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_17_031602) do
+ActiveRecord::Schema.define(version: 2021_12_18_175059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,15 @@ ActiveRecord::Schema.define(version: 2021_12_17_031602) do
     t.index ["intention_id"], name: "index_correspondences_intentions_on_intention_id"
   end
 
+  create_table "correspondences_subintentions", force: :cascade do |t|
+    t.bigint "correspondence_id"
+    t.bigint "subintention_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["correspondence_id"], name: "index_correspondences_subintentions_on_correspondence_id"
+    t.index ["subintention_id"], name: "index_correspondences_subintentions_on_subintention_id"
+  end
+
   create_table "intentions", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -48,10 +57,19 @@ ActiveRecord::Schema.define(version: 2021_12_17_031602) do
     t.string "content"
     t.bigint "correspondence_id"
     t.bigint "intention_id"
+    t.integer "subintention_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["correspondence_id"], name: "index_notes_on_correspondence_id"
     t.index ["intention_id"], name: "index_notes_on_intention_id"
+  end
+
+  create_table "subintentions", force: :cascade do |t|
+    t.string "name"
+    t.bigint "intention_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["intention_id"], name: "index_subintentions_on_intention_id"
   end
 
 end
