@@ -193,9 +193,11 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
             if(resp.ok){
                 resp.json().then(subIntentionData => {
                     setSubintentions(prev => [...prev, subIntentionData])
+                    alert("Subintention created!")
+                    setCreatingSubintention(prev => !prev )
                 })
             } else {
-
+                resp.json(error => alert(error.errors))
             }
         })
     }
