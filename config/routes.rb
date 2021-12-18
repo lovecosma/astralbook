@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :subintentions
   resources :notes
   scope :api do 
         resources :categories do 

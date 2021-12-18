@@ -1,0 +1,2 @@
+class Subintention < ApplicationRecord
+end
