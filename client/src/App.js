@@ -11,7 +11,7 @@ function App() {
           <NavBar/>
           <Routes>
             <Route path="/categories/new" element={<CategoryMaker/>}></Route>
-            <Route path="/correspondences/new" element={<CorrespondencesContainer/>}></Route>
+            <Route path="/correspondences/*" element={<CorrespondencesContainer/>}></Route>
             <Route path="/intentions/new" element={<IntentionMaker/>}></Route>
           </Routes>
         </Router>

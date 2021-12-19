@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import {useDispatch, useSelector} from "react-redux"
 import M from "materialize-css"
 import CollectionSelect from '../components/CollectionSelect'
+import {fetchIntentions} from '../actions/intentions'
 
-export default function CorrespondencesMaker({categories, setCorrespondences, intentions}) {
+export default function CorrespondencesMaker() {
     
     const [correspondenceNames, setCorrespodenceNames] = useState("")
     const [subIntentionName, setSubIntentionName] = useState("")
@@ -10,16 +12,28 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
     const [categoryId, setCategoryId] = useState(null)
     const [intentionId, setIntentionId] = useState(null)
     const [subIntentionId, setSubIntentionId] = useState(null)
+
     const [intention, setIntention] = useState({})
+    const dispatch = useDispatch()
+    const {intentions, subintentions} = useSelector(({intentionsReducer}) => {
+        return {
+            ...intentionsReducer
+        }
+    })
+
+    
     const [recentlyAdded, setRecentlyAdded] = useState([])
     const [editing, setEditing] = useState(false)
-    const [subintentions, setSubintentions] = useState([])
     const [creatingSubintention, setCreatingSubintention] = useState(false)
+
+    useEffect(() => {
+        fetchIntentions(dispatch)
+    }, [])
 
     useEffect(() => {
         let elems = document.querySelectorAll('select');
         M.FormSelect.init(elems, {});
-    }, [intention, creatingSubintention])
+    }, [intentions])
     
     
     const handleChange = (e) => {
@@ -118,19 +132,18 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         })
     }
 
-    const fetchIntention = id => {
-        fetch(`/api/intentions/${id}`)
+    const fetchIntentionCorrespondences = id => {
+        fetch(`/api/intentions/${id}/correspondences`)
         .then(resp => resp.json())
         .then((intent) => {
             setIntention({...intent})
-            setCorrespondences([...intent.correspondences])
-            setSubintentions([...intent.subintentions])
         })
     }
 
     const handleIntentionSelect = (e) => {
         setIntentionId(e.target.value)
-        fetchIntention(e.target.value)
+        setSubIntentionId(null)
+        fetchIntentionCorrespondences(e.target.value)
     }   
 
     const deleteFromDB = (id) => {
@@ -192,9 +205,8 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
         .then(resp => {
             if(resp.ok){
                 resp.json().then(subIntentionData => {
-                    setSubintentions(prev => [...prev, subIntentionData])
                     alert("Subintention created!")
-                    setCreatingSubintention(prev => !prev )
+                    document.getElementById("creating-subintention").click()
                 })
             } else {
                 resp.json(error => alert(error.errors))
@@ -206,18 +218,11 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
 
     return (
         <div>
-            <form onSubmit={handleSubmit} >
-                <CollectionSelect handleSelect={handleIntentionSelect} collection={intentions} attr={"name"} title={"Intention"} />
-            {creatingSubintention ? 
-                <div>
-                    <input type="text" onChange={(e) => setSubIntentionName(e.target.value)}/>
-                    <button onClick={createSubintention}>Create New Subintention</button>
-                </div>
-            :
-                <CollectionSelect handleSelect={(e) => setSubIntentionId(e.target.value)} collection={subintentions} attr={"name"} title={"Subintention"}/>
-            }
-                <CollectionSelect handleSelect={(e) => setCategoryId(e.target.value)} collection={categories} attr={"title"} title={"Category"}/>
-                <br/>
+            <h1>Correspondences Maker</h1>
+           <form onSubmit={handleSubmit} >
+                <CollectionSelect handleSelect={handleIntentionSelect} collection={intentions} attr={"name"} title={"Intention"} />\
+                {/* <CollectionSelect handleSelect={(e) => setCategoryId(e.target.value)} collection={categories} attr={"title"} title={"Category"}/> */}
+                {/* <br/>
                 <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <button type="submit">Create Correspondences</button>
                 <p>
@@ -228,37 +233,11 @@ export default function CorrespondencesMaker({categories, setCorrespondences, in
                 </p>
                 <p>
                     <label>
-                        <input onClick={() => setCreatingSubintention(prev => !prev)} type="checkbox" />
+                        <input id="creating-subintention" onClick={() => setCreatingSubintention(prev => !prev)} type="checkbox" value={() => createSubintention ? "1" : "0"}/>
                         <span>Creating Subintention</span>
                     </label>
-                </p>
+                </p> */}
             </form>
-            <br/>
-            {intention.id && 
-            <div>
-                <div>
-                    <h5>Recently Added</h5>
-                    {recentlyAdded.map(c => <div>{c.name} - {c.category.title} {c.notes.filter(note => note.intention_id === intention.id).map(note => `- ${note.content} `)}</div>)}
-                </div>
-                <h3>{intention.name}</h3>
-                <div className="intentions-conatiner" >
-                {intention.correspondences.map(c => {
-                            return (
-                                <div>
-                                    {c.name} - {c.category.title} {c.notes.filter(note => note.intention_id === intention.id).map(note => `- (${note.content}) `)}
-                                    {editing && 
-                                    <div>
-                                        <button onClick={() => deleteFromDB(c.id)}>Delete from DB</button>
-                                        <button onClick={() => removeFromIntention(c.id, intention.id)}>Delete from Intention Only</button>
-                                    </div>
-                                    }
-                                </div>
-                                
-                            )
-                        })}
-                </div>
-            </div>
-            }
         </div>
     )
 }

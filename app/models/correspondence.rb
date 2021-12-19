@@ -1,9 +1,9 @@
 class Correspondence < ApplicationRecord
     validates :name, presence: true, length: {minimum: 1}
+    belongs_to :category
     validate :uniqueness_within_category
     has_and_belongs_to_many :intentions
     has_many :correspondences, through: :intentions
-    belongs_to :category
     has_many :notes, dependent: :destroy
     has_and_belongs_to_many :subintentions    
 

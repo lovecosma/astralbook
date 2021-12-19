@@ -1,16 +1,21 @@
 class CorrespondencesController < ApplicationController
 
-    def index 
-        if params[:category_id]
-            category = Category.find(params[:category_id])
-            if category
-                render json: category.correspondences, status: :ok
+    def index
+        if params[:intention_id]
+            intention = Intention.find(params[:intention_id])
+            if intention
+                render json: intention.correspondences, status: :ok
             else
-                render json: {error: "Category not found."}, status: :not_found
+                render json: {errors: "Must use a valid intention_id."}, status: :unprocessable_entity
             end
-        else
-            render json: Correspondence.all, status: :ok
-        end 
+        elsif params[:subintention_id]
+            subintention = Subintention.find(params[:subintention_id])
+            if subintention
+                render json: subintention.correspondences, status: :ok
+            else
+                render json: {errors: "Must use a valid subintention_id."}, status: :unprocessable_entity
+            end
+        end
     end
 
 
