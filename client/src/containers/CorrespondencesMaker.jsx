@@ -238,7 +238,7 @@ export default function CorrespondencesMaker() {
                 <CheckBox callback={() => setEditing(prev => !prev)} text={"Editing"}/>
                 <CheckBox callback={() => setCreatingSubintention(prev => !prev)} text={"Creating Subintention"} />
             <br/>
-            {intentionSet && <Correspondences correspondences={correspondences} intention={intention}/>}
+            {intentionSet && <Correspondences correspondences={correspondences} intention={intention} editing={editing}/>}
         </div>
     )
 }
