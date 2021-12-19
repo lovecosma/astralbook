@@ -1,4 +1,3 @@
 class CorrespondenceSerializer < ActiveModel::Serializer
-  attributes :id, :name, :notes
-  belongs_to :category
+  attributes :id, :name, :category_id, :category_title
 end

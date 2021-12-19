@@ -1,5 +1,8 @@
-.correspondences-container{
-    padding: 50px
+#correspondences-container{
+    padding: 10px;
+    column-count: 10;
+    column-gap: 5px;
+    column-span: 100px;
 }
 
 .intentions-container{

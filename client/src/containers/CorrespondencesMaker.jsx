@@ -5,6 +5,7 @@ import CollectionSelect from '../components/CollectionSelect'
 import {fetchIntentions} from '../actions/intentions'
 import {fetchCategories} from "../actions/categories"
 import CheckBox from '../components/CheckBox'
+import Correspondences from './Correspondences'
 
 export default function CorrespondencesMaker() {
     
@@ -93,17 +94,7 @@ export default function CorrespondencesMaker() {
         })
         .then(resp => {
             if(resp.ok){
-                resp.json().then(correspondenceData => {
-                   if(intention.correspondences.filter(cor => cor.id === correspondenceData.id).length === 0){
-                       setRecentlyAdded(prev => [...prev, correspondenceData])
-                        setIntention(prev => {
-                            return {
-                                ...prev,
-                                correspondences: [...prev.correspondences, correspondenceData].sort((a, b) => a.category_id > b.category_id)
-                            }
-                        })
-                   }
-                })
+                resp.json().then(correspondenceData => setCorrespondences(prev => [...prev, correspondenceData]))
             }else{
                 resp.json().then(error => alert(error.errors))
             }
@@ -145,15 +136,14 @@ export default function CorrespondencesMaker() {
     const fetchIntentionCorrespondences = id => {
         fetch(`/api/intentions/${id}/correspondences`)
         .then(resp => resp.json())
-        .then((intent) => {
-            setIntention({...intent})
-        })
+        .then(setCorrespondences)
     }
 
     const handleIntentionSelect = (e) => {
-        setIntention(intentions.find(intent => intent.id === Number(e.target.value)))
+       let intent = intentions.find(intent => intent.id === Number(e.target.value))
+        setIntention(intent)
+        setIntentionId(intent.id)
         setIntentionSet(true)
-        setSubIntentionId(null)
         fetchIntentionCorrespondences(e.target.value)
     }   
 
@@ -247,6 +237,8 @@ export default function CorrespondencesMaker() {
             </form>
                 <CheckBox callback={() => setEditing(prev => !prev)} text={"Editing"}/>
                 <CheckBox callback={() => setCreatingSubintention(prev => !prev)} text={"Creating Subintention"} />
+            <br/>
+            {intentionSet && <Correspondences correspondences={correspondences} intention={intention}/>}
         </div>
     )
 }
