@@ -1,3 +1,3 @@
 class SubintentionSerializer < ActiveModel::Serializer
-  attributes :id, :name, :correspondences
+  attributes :id, :name
 end

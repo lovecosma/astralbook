@@ -8,3 +8,4 @@ export const fetchIntentions = async (dispatch) => {
             dispatch({type: "ERRORS", errors})
     }
 }
+

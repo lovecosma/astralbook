@@ -3,6 +3,8 @@ import {useDispatch, useSelector} from "react-redux"
 import M from "materialize-css"
 import CollectionSelect from '../components/CollectionSelect'
 import {fetchIntentions} from '../actions/intentions'
+import {fetchCategories} from "../actions/categories"
+import CheckBox from '../components/CheckBox'
 
 export default function CorrespondencesMaker() {
     
@@ -14,10 +16,17 @@ export default function CorrespondencesMaker() {
     const [subIntentionId, setSubIntentionId] = useState(null)
 
     const [intention, setIntention] = useState({})
+    const [intentionSet, setIntentionSet] = useState(false)
+    const [subintentions, setSubintentions] = useState([])
+    const [correspondences, setCorrespondences] = useState([])
+    const [subintentionCorrespondences, setSubintentionCorrespondences] = useState([])
+
     const dispatch = useDispatch()
-    const {intentions, subintentions} = useSelector(({intentionsReducer}) => {
+    const {intentions, categories} = useSelector(({intentionsReducer, categoriesReducer}) => {
+        debugger
         return {
-            ...intentionsReducer
+            ...intentionsReducer,
+            ...categoriesReducer
         }
     })
 
@@ -28,12 +37,13 @@ export default function CorrespondencesMaker() {
 
     useEffect(() => {
         fetchIntentions(dispatch)
+        fetchCategories(dispatch)
     }, [])
 
     useEffect(() => {
         let elems = document.querySelectorAll('select');
         M.FormSelect.init(elems, {});
-    }, [intentions])
+    }, [intentions, categories, intentionSet, creatingSubintention])
     
     
     const handleChange = (e) => {
@@ -141,7 +151,8 @@ export default function CorrespondencesMaker() {
     }
 
     const handleIntentionSelect = (e) => {
-        setIntentionId(e.target.value)
+        setIntention(intentions.find(intent => intent.id === Number(e.target.value)))
+        setIntentionSet(true)
         setSubIntentionId(null)
         fetchIntentionCorrespondences(e.target.value)
     }   
@@ -220,24 +231,22 @@ export default function CorrespondencesMaker() {
         <div>
             <h1>Correspondences Maker</h1>
            <form onSubmit={handleSubmit} >
-                <CollectionSelect handleSelect={handleIntentionSelect} collection={intentions} attr={"name"} title={"Intention"} />\
-                {/* <CollectionSelect handleSelect={(e) => setCategoryId(e.target.value)} collection={categories} attr={"title"} title={"Category"}/> */}
-                {/* <br/>
+                <CollectionSelect handleSelect={handleIntentionSelect} collection={intentions} attr={"name"} title={"Intention"} />
+                {intentionSet && 
+                creatingSubintention ? 
+                <div>
+                    <input type="text" onChange={(e) => setSubIntentionName(e.target.value)}/>
+                    <button onClick={createSubintention}>Create New Subintention</button>
+                </div>
+                :
+                <CollectionSelect handleSelect={(e) => setSubIntentionId(e.target.value)} collection={subintentions} attr={"name"} title={"Subintention"}/>
+                }
+                <CollectionSelect handleSelect={(e) => setCategoryId(e.target.value)} collection={categories} attr={"title"} title={"Category"}/>
                 <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <button type="submit">Create Correspondences</button>
-                <p>
-                    <label>
-                        <input onClick={() => setEditing(prev => !prev)} type="checkbox" />
-                        <span>Editing</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input id="creating-subintention" onClick={() => setCreatingSubintention(prev => !prev)} type="checkbox" value={() => createSubintention ? "1" : "0"}/>
-                        <span>Creating Subintention</span>
-                    </label>
-                </p> */}
             </form>
+                <CheckBox callback={() => setEditing(prev => !prev)} text={"Editing"}/>
+                <CheckBox callback={() => setCreatingSubintention(prev => !prev)} text={"Creating Subintention"} />
         </div>
     )
 }

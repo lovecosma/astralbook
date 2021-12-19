@@ -1,14 +1,9 @@
-const intentionsReducer = (state = {intentions: [], subintentions: [], errors: ""}, action) => {
+const intentionsReducer = (state = {intentions: [], errors: ""}, action) => {
     switch (action.type) {
         case "ADDING_INTENTIONS":
             return{
                 ...state,
                 intentions: [...action.intentions]
-            }
-        case "ADDING_SUBINTENTIONS":
-            return{
-                ...state,
-                subintentions: [...action.subintentions]
             }
         case "ERRORS":
             return{
