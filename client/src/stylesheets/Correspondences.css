@@ -1,18 +1,16 @@
 #correspondences-container{
-    padding: 10px;
-    column-count: 7;
-    column-gap: 5px;
-    column-span: 150px;
-    column-fill: auto;
-    height: 1000px;
-    overflow: scroll;
+    padding: 10px;   
+}
 
-    
+#recently-added-container{
 }
 
 .correspondence-card{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+}
+.correspondence{
+    margin-right: 10px;
 }
 
 .intentions-container{

@@ -6,6 +6,7 @@ import {fetchIntentions} from '../actions/intentions'
 import {fetchCategories} from "../actions/categories"
 import CheckBox from '../components/CheckBox'
 import Correspondences from './Correspondences'
+import CorrespondenceCard from '../components/CorrespondenceCard'
 
 export default function CorrespondencesMaker() {
     
@@ -94,7 +95,10 @@ export default function CorrespondencesMaker() {
         })
         .then(resp => {
             if(resp.ok){
-                resp.json().then(correspondenceData => setCorrespondences(prev => [...prev, correspondenceData]))
+                resp.json().then(correspondenceData => { 
+                    setCorrespondences(prev => [...prev, correspondenceData])
+                    setRecentlyAdded(prev => [...prev, correspondenceData])
+                })
             }else{
                 resp.json().then(error => alert(error.errors))
             }
@@ -142,6 +146,7 @@ export default function CorrespondencesMaker() {
     const handleIntentionSelect = (e) => {
        let intent = intentions.find(intent => intent.id === Number(e.target.value))
         setIntention(intent)
+        setSubintentions([...intent.subintentions])
         setIntentionId(intent.id)
         setIntentionSet(true)
         fetchIntentionCorrespondences(e.target.value)
@@ -237,8 +242,11 @@ export default function CorrespondencesMaker() {
             </form>
                 <CheckBox callback={() => setEditing(prev => !prev)} text={"Editing"}/>
                 <CheckBox callback={() => setCreatingSubintention(prev => !prev)} text={"Creating Subintention"} />
-            <br/>
-            {intentionSet && <Correspondences correspondences={correspondences} intention={intention} editing={editing}/>}
+            <h3>Recently Added</h3>
+            <div id="recently-added-container">
+                {recentlyAdded.map(correspondence => <CorrespondenceCard correspondence={correspondence} editing={editing}/>)}
+            </div>
+                {intentionSet && <Correspondences correspondences={correspondences} intention={intention} editing={editing}/>}
         </div>
     )
 }
