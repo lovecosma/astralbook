@@ -15,6 +15,8 @@ class CorrespondencesController < ApplicationController
             else
                 render json: {errors: "Must use a valid subintention_id."}, status: :unprocessable_entity
             end
+        else
+            render json: Correspondence.all
         end
     end
 

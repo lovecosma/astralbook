@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_175059) do
   create_table "correspondences", force: :cascade do |t|
     t.string "name"
     t.bigint "category_id"
+    t.string "category_title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["category_id"], name: "index_correspondences_on_category_id"
