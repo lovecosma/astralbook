@@ -21,11 +21,11 @@ export default function CorrespondencesMaker() {
     const [intentionSet, setIntentionSet] = useState(false)
     const [subintentions, setSubintentions] = useState([])
     const [correspondences, setCorrespondences] = useState([])
-    const [subintentionCorrespondences, setSubintentionCorrespondences] = useState([])
+    
+    const [forDeletion, setForDeletion] = useState([])
 
     const dispatch = useDispatch()
     const {intentions, categories} = useSelector(({intentionsReducer, categoriesReducer}) => {
-        debugger
         return {
             ...intentionsReducer,
             ...categoriesReducer
@@ -162,13 +162,8 @@ export default function CorrespondencesMaker() {
         })
         .then((resp) => {
             if(resp.ok){
-                alert("Correspondence deleted from database")
-                setIntention(prev => {
-                    return {
-                        ...prev,
-                        correspondences: prev.correspondences.filter(cor => cor.id !== id)
-                    }
-                })
+                setCorrespondences(prev =>  prev.filter(cor => cor.id !== Number(id)))
+                setRecentlyAdded(prev =>  prev.filter(cor => cor.id !== Number(id)))
             }else {
                 alert("Check API")
             }
@@ -220,6 +215,22 @@ export default function CorrespondencesMaker() {
         })
     }
 
+    const handleDeletionSelection = (id) => {
+       if (forDeletion.includes(id)) {
+           setForDeletion(prev => prev.filter(index => index !== id))
+       } else {
+           setForDeletion(prev => [...prev, id])
+       }
+    }
+
+    const handleDeletes = () => {
+        document.getElementById('editing').click()
+        forDeletion.forEach(id => {
+            deleteFromDB(id)
+        })
+        setForDeletion([])
+    }
+
    
 
     return (
@@ -240,13 +251,16 @@ export default function CorrespondencesMaker() {
                 <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <button type="submit">Create Correspondences</button>
             </form>
-                <CheckBox callback={() => setEditing(prev => !prev)} text={"Editing"}/>
+                <CheckBox id={'editing'} callback={() => setEditing(prev => !prev)} text={"Editing"}/>
                 <CheckBox callback={() => setCreatingSubintention(prev => !prev)} text={"Creating Subintention"} />
+                {editing && <button onClick={handleDeletes}>Delete from DB</button>}<br/>
+                {editing && <button>Remove from Intention</button>}<br/>
+                {editing && <button>Remove from Subintention</button>}<br/>
             <h3>Recently Added</h3>
             <div id="recently-added-container">
-                {recentlyAdded.map(correspondence => <CorrespondenceCard correspondence={correspondence} editing={editing}/>)}
+                {recentlyAdded.map(correspondence => <CorrespondenceCard correspondence={correspondence} editing={editing} handleDeletionSelection={handleDeletionSelection}/>)}
             </div>
-                {intentionSet && <Correspondences correspondences={correspondences} intention={intention} editing={editing}/>}
+                {intentionSet && <Correspondences correspondences={correspondences} intention={intention} editing={editing} handleDeletionSelection={handleDeletionSelection}/>}
         </div>
     )
 }

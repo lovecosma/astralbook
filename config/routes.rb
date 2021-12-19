@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :categories do 
       resources :correspondences, :only => [:index]
     end
+    resources :correspondences
     resources :intentions do 
       resources :correspondences
       resources :subintentions do 
