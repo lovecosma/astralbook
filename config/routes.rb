@@ -6,9 +6,6 @@ Rails.application.routes.draw do
     resources :correspondences
     resources :intentions do 
       resources :correspondences
-      resources :subintentions do 
-        resources :correspondences
-      end
     end
   end
 

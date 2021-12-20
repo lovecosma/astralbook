@@ -1,5 +1,4 @@
 import React from 'react'
-import CorrespondenceCard from './CorrespondenceCard'
 
 export default function CheckBox({callback, text, id, correspondence}) {
     return (

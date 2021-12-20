@@ -5,6 +5,11 @@ const intentionsReducer = (state = {intentions: [], errors: ""}, action) => {
                 ...state,
                 intentions: [...action.intentions]
             }
+        case "ADDING_INTENTION":
+            return {
+                ...state,
+                intentions: [...state.intentions, action.intention]
+            }
         case "ERRORS":
             return{
                 ...state,

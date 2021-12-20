@@ -7,13 +7,13 @@ import {fetchCategories} from "../actions/categories"
 import CheckBox from '../components/CheckBox'
 import Correspondences from './Correspondences'
 import CorrespondenceCard from '../components/CorrespondenceCard'
+import IntentionForm from './IntentionForm'
 
 export default function CorrespondencesMaker() {
     
     const [correspondenceNames, setCorrespodenceNames] = useState("")
 
     const [categoryId, setCategoryId] = useState(null)
-    const [intentionId, setIntentionId] = useState(null)
 
     const [intention, setIntention] = useState({})
     const [intentionSet, setIntentionSet] = useState(false)
@@ -34,15 +34,16 @@ export default function CorrespondencesMaker() {
     const [editing, setEditing] = useState(false)
     const [creatingIntention, setCreatingIntention] = useState(false)
 
+
     useEffect(() => {
         fetchIntentions(dispatch)
         fetchCategories(dispatch)
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         let elems = document.querySelectorAll('select');
         M.FormSelect.init(elems, {});
-    }, [intentions, categories, intentionSet])
+    }, [intentions, categories, intentionSet, creatingIntention])
     
     
     const handleChange = (e) => {
@@ -75,7 +76,7 @@ export default function CorrespondencesMaker() {
     }
     const createIntentionCorrespondence = (correspondence) => {
         
-        fetch(`/api/intentions/${intentionId}/correspondences`, {
+        fetch(`/api/intentions/${intention.id}/correspondences`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -104,7 +105,6 @@ export default function CorrespondencesMaker() {
     const handleIntentionSelect = (e) => {
        let intent = intentions.find(intent => intent.id === Number(e.target.value))
         setIntention(intent)
-        setIntentionId(intent.id)
         setIntentionSet(true)
         fetchIntentionCorrespondences(e.target.value)
     }   
@@ -167,17 +167,18 @@ export default function CorrespondencesMaker() {
         <div>
             <h1>Correspondences Maker</h1>
            <form onSubmit={handleSubmit} >
-                <CollectionSelect handleSelect={handleIntentionSelect} collection={intentions} attr={"name"} title={"Intention"} />
+                {creatingIntention ? <IntentionForm setCreatingIntention={setCreatingIntention}/> : <CollectionSelect handleSelect={handleIntentionSelect} collection={intentions} attr={"name"} title={"Intention"} />}
                 <CollectionSelect handleSelect={(e) => setCategoryId(e.target.value)} collection={categories} attr={"title"} title={"Category"}/>
                 <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <button type="submit">Create Correspondences</button>
             </form>
                 <CheckBox id={'editing'} callback={() => setEditing(prev => !prev)} text={"Editing"}/>
+                <CheckBox id={'creating-intention'} callback={() => setCreatingIntention(prev => !prev)} text={"Creating Intention"}/>
                 {editing && <button onClick={handleDeletes}>Delete from DB</button>}<br/>
                 {editing && <button>Remove from Intention</button>}<br/>
             <h3>Recently Added</h3>
             <div id="recently-added-container">
-                {recentlyAdded.map(correspondence => <CorrespondenceCard correspondence={correspondence} intention={intention} editing={editing} handleDeletionSelection={handleDeletionSelection}/>)}
+                {recentlyAdded.map(correspondence => <CorrespondenceCard key={correspondence.id} correspondence={correspondence} intention={intention} editing={editing} handleDeletionSelection={handleDeletionSelection}/>)}
             </div>
                 {intentionSet && <Correspondences correspondences={correspondences} intention={intention} editing={editing} handleDeletionSelection={handleDeletionSelection}/>}
         </div>
