@@ -11,15 +11,12 @@ import CorrespondenceCard from '../components/CorrespondenceCard'
 export default function CorrespondencesMaker() {
     
     const [correspondenceNames, setCorrespodenceNames] = useState("")
-    const [subIntentionName, setSubIntentionName] = useState("")
 
     const [categoryId, setCategoryId] = useState(null)
     const [intentionId, setIntentionId] = useState(null)
-    const [subIntentionId, setSubIntentionId] = useState(null)
 
     const [intention, setIntention] = useState({})
     const [intentionSet, setIntentionSet] = useState(false)
-    const [subintentions, setSubintentions] = useState([])
     const [correspondences, setCorrespondences] = useState([])
     
     const [forDeletion, setForDeletion] = useState([])
@@ -35,7 +32,7 @@ export default function CorrespondencesMaker() {
     
     const [recentlyAdded, setRecentlyAdded] = useState([])
     const [editing, setEditing] = useState(false)
-    const [creatingSubintention, setCreatingSubintention] = useState(false)
+    const [creatingIntention, setCreatingIntention] = useState(false)
 
     useEffect(() => {
         fetchIntentions(dispatch)
@@ -45,7 +42,7 @@ export default function CorrespondencesMaker() {
     useEffect(() => {
         let elems = document.querySelectorAll('select');
         M.FormSelect.init(elems, {});
-    }, [intentions, categories, intentionSet, creatingSubintention])
+    }, [intentions, categories, intentionSet])
     
     
     const handleChange = (e) => {
@@ -62,7 +59,6 @@ export default function CorrespondencesMaker() {
             let actual_name = name.split(" (")[0]
             let split_array = name.split(" (")
             let note;
-            let subintention = !!Number(subIntentionId) ? subIntentionId : null
             if(split_array.length > 1){
                 note = split_array[1].split(")")[0].split("/").map(note => note.trim()).join(", ")
             }
@@ -74,13 +70,7 @@ export default function CorrespondencesMaker() {
                 }
             }
         })
-        itemsData.forEach(correspondence => {
-            if(!!Number(subIntentionId)){
-                createSubintentionCorrespondence(correspondence)
-            } else {
-                createIntentionCorrespondence(correspondence)
-            }
-        })
+        itemsData.forEach(correspondence => createIntentionCorrespondence(correspondence))
         setCorrespodenceNames("")
     }
     const createIntentionCorrespondence = (correspondence) => {
@@ -105,38 +95,6 @@ export default function CorrespondencesMaker() {
         })
     }
 
-    const createSubintentionCorrespondence = (correspondence) => {
-        let params = {
-            subintention_id: subIntentionId,
-            ...correspondence
-        }
-        fetch(`/api/subintention_correspondences`, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(params)
-        })
-        .then(resp => {
-            if(resp.ok){
-                resp.json().then(correspondenceData => {
-                   if(intention.correspondences.filter(cor => cor.id === correspondenceData.id).length === 0){
-                       setRecentlyAdded(prev => [...prev, correspondenceData])
-                        setIntention(prev => {
-                            return {
-                                ...prev,
-                                correspondences: [...prev.correspondences, correspondenceData].sort((a, b) => a.category_id > b.category_id)
-                            }
-                        })
-                   }
-                })
-            }else{
-                resp.json().then(error => alert(error.errors))
-            }
-        })
-    }
-
     const fetchIntentionCorrespondences = id => {
         fetch(`/api/intentions/${id}/correspondences`)
         .then(resp => resp.json())
@@ -146,7 +104,6 @@ export default function CorrespondencesMaker() {
     const handleIntentionSelect = (e) => {
        let intent = intentions.find(intent => intent.id === Number(e.target.value))
         setIntention(intent)
-        setSubintentions([...intent.subintentions])
         setIntentionId(intent.id)
         setIntentionSet(true)
         fetchIntentionCorrespondences(e.target.value)
@@ -188,33 +145,6 @@ export default function CorrespondencesMaker() {
         })
     }
 
-    const createSubintention = (e) => {
-        e.preventDefault()
-        let params = {
-            subintention: {
-                name: subIntentionName
-            }
-        }
-        fetch(`/api/intentions/${intentionId}/subintentions`, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(params)
-        })
-        .then(resp => {
-            if(resp.ok){
-                resp.json().then(subIntentionData => {
-                    alert("Subintention created!")
-                    document.getElementById("creating-subintention").click()
-                })
-            } else {
-                resp.json(error => alert(error.errors))
-            }
-        })
-    }
-
     const handleDeletionSelection = (id) => {
        if (forDeletion.includes(id)) {
            setForDeletion(prev => prev.filter(index => index !== id))
@@ -238,27 +168,16 @@ export default function CorrespondencesMaker() {
             <h1>Correspondences Maker</h1>
            <form onSubmit={handleSubmit} >
                 <CollectionSelect handleSelect={handleIntentionSelect} collection={intentions} attr={"name"} title={"Intention"} />
-                {intentionSet && 
-                creatingSubintention ? 
-                <div>
-                    <input type="text" onChange={(e) => setSubIntentionName(e.target.value)}/>
-                    <button onClick={createSubintention}>Create New Subintention</button>
-                </div>
-                :
-                <CollectionSelect handleSelect={(e) => setSubIntentionId(e.target.value)} collection={subintentions} attr={"name"} title={"Subintention"}/>
-                }
                 <CollectionSelect handleSelect={(e) => setCategoryId(e.target.value)} collection={categories} attr={"title"} title={"Category"}/>
                 <input placeholder="names seprated by comma" type="text" name="correspondence-names" value={correspondenceNames} onChange={handleChange}/>
                 <button type="submit">Create Correspondences</button>
             </form>
                 <CheckBox id={'editing'} callback={() => setEditing(prev => !prev)} text={"Editing"}/>
-                <CheckBox callback={() => setCreatingSubintention(prev => !prev)} text={"Creating Subintention"} />
                 {editing && <button onClick={handleDeletes}>Delete from DB</button>}<br/>
                 {editing && <button>Remove from Intention</button>}<br/>
-                {editing && <button>Remove from Subintention</button>}<br/>
             <h3>Recently Added</h3>
             <div id="recently-added-container">
-                {recentlyAdded.map(correspondence => <CorrespondenceCard correspondence={correspondence} editing={editing} handleDeletionSelection={handleDeletionSelection}/>)}
+                {recentlyAdded.map(correspondence => <CorrespondenceCard correspondence={correspondence} intention={intention} editing={editing} handleDeletionSelection={handleDeletionSelection}/>)}
             </div>
                 {intentionSet && <Correspondences correspondences={correspondences} intention={intention} editing={editing} handleDeletionSelection={handleDeletionSelection}/>}
         </div>

@@ -1,3 +1,3 @@
 class NoteSerializer < ActiveModel::Serializer
-  attributes :id, :intention_id, :subintention_id, :content
+  attributes :id, :intention_id, :content
 end

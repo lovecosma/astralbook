@@ -8,13 +8,6 @@ class CorrespondencesController < ApplicationController
             else
                 render json: {errors: "Must use a valid intention_id."}, status: :unprocessable_entity
             end
-        elsif params[:subintention_id]
-            subintention = Subintention.find(params[:subintention_id])
-            if subintention
-                render json: subintention.correspondences, status: :ok
-            else
-                render json: {errors: "Must use a valid subintention_id."}, status: :unprocessable_entity
-            end
         else
             render json: Correspondence.all
         end

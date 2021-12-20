@@ -4,7 +4,6 @@ class CreateNotes < ActiveRecord::Migration[6.1]
       t.string :content
       t.belongs_to :correspondence
       t.belongs_to :intention
-      t.integer :subintention_id
       t.timestamps
     end
   end
