@@ -3,6 +3,12 @@ class Intention < ApplicationRecord
     accepts_nested_attributes_for :correspondences
     validates :name, presence: true, uniqueness: true
     has_many :notes, :through => :correspondences
+    validate :all_lowercase
+
+
+    def all_lowercase 
+        self.name = self.name.split(" ").map{|word| word.downcase }.join(" ")
+    end
 
  
 end
