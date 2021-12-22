@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   scope :api do 
+    patch "/intentions/:id/destroy_all_correspondences", to: "intentions#destroy_all_correspondences"
     resources :categories do 
       resources :correspondences, :only => [:index]
     end

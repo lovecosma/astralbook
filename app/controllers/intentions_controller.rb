@@ -27,6 +27,20 @@ class IntentionsController < ApplicationController
 
     end
 
+    def destroy_all_correspondences
+        intention = Intention.find(params[:id])
+        if intention
+            intention.correspondences.delete_all
+            if intention.save
+                head :ok
+            else
+                render json: {errors: intention}
+            end
+        else
+            render json: {errors: "Intention not found."}
+        end
+    end
+
 
 
 
@@ -36,9 +50,8 @@ class IntentionsController < ApplicationController
     def intention_params
         params.require(:intention).permit(
             :name, 
-            :desc, 
-            {:correspondences_attributes => [:name, :category_id]}
-        )
+            :desc
+         )
     end
 
 end

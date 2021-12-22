@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import "../stylesheets/Category.css"
+
 export default function CategoryMaker() {
 
     const [title, setTitle] = useState("")

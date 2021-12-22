@@ -102,8 +102,28 @@ export default function CorrespondencesMaker() {
         .then(setCorrespondences)
     }
 
+    const  dropAllCorrespondencesFromIntention = async () => {
+        let resp = await fetch(`/api/intentions/${intention.id}/destroy_all_correspondences`, {
+            method: "PATCH", 
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+        if (resp.ok) {
+            alert("Correspondences deleted.")
+            setCorrespondences([])
+            setRecentlyAdded([])
+        } else {
+            let e = await resp.json()
+            let {errors} = e
+            alert(errors)  
+        }
+    }
+
     const handleIntentionSelect = (e) => {
        let intent = intentions.find(intent => intent.id === Number(e.target.value))
+        setRecentlyAdded([])
         setIntention(intent)
         setIntentionSet(true)
         fetchIntentionCorrespondences(e.target.value)
@@ -175,7 +195,7 @@ export default function CorrespondencesMaker() {
                 <CheckBox id={'editing'} callback={() => setEditing(prev => !prev)} text={"Editing"}/>
                 <CheckBox id={'creating-intention'} callback={() => setCreatingIntention(prev => !prev)} text={"Creating Intention"}/>
                 {editing && <button onClick={handleDeletes}>Delete from DB</button>}<br/>
-                {editing && <button>Remove from Intention</button>}<br/>
+                {editing && <button onClick={dropAllCorrespondencesFromIntention}>Remove from Intention</button>}<br/>
             <h3>Recently Added</h3>
             <div id="recently-added-container">
                 {recentlyAdded.map(correspondence => <CorrespondenceCard key={correspondence.id} correspondence={correspondence} intention={intention} editing={editing} handleDeletionSelection={handleDeletionSelection}/>)}
