@@ -195,7 +195,7 @@ export default function CorrespondencesMaker() {
                 <CheckBox id={'editing'} callback={() => setEditing(prev => !prev)} text={"Editing"}/>
                 <CheckBox id={'creating-intention'} callback={() => setCreatingIntention(prev => !prev)} text={"Creating Intention"}/>
                 {editing && <button onClick={handleDeletes}>Delete from DB</button>}<br/>
-                {editing && <button onClick={dropAllCorrespondencesFromIntention}>Remove from Intention</button>}<br/>
+                {editing && <button onClick={dropAllCorrespondencesFromIntention}>Remove all Correspondences</button>}<br/>
             <h3>Recently Added</h3>
             <div id="recently-added-container">
                 {recentlyAdded.map(correspondence => <CorrespondenceCard key={correspondence.id} correspondence={correspondence} intention={intention} editing={editing} handleDeletionSelection={handleDeletionSelection}/>)}
